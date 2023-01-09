@@ -29,9 +29,9 @@ export const medias = {
   label: "Movies N' TV Shows",
 };
 export const mediaInfos = {
-  path: '/medias/:mediaId',
+  path: '/medias/:id',
   component: <MediaInfos />,
-  getPath: (mediaId: string) => `/medias/${mediaId}`,
+  getPath: (id: string) => `/medias/${id}`,
 };
 export const library = {
   path: '/library',

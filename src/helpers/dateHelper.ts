@@ -1,5 +1,5 @@
 export const getCurrentMonth = () => {
-  const month = [
+  const months = [
     'January',
     'February',
     'March',
@@ -14,5 +14,5 @@ export const getCurrentMonth = () => {
     'December',
   ];
 
-  return month[new Date().getMonth()];
+  return months[new Date().getMonth()];
 };

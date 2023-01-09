@@ -4,11 +4,11 @@ import { forum, home, library, medias } from '../constants/routes';
 import { useNavigateWithQuery } from '../hooks/useNavigateWithQuery';
 import { ThemeColoredIcon } from './ThemeColoredIcon';
 
-interface MainLinksProps {
+interface MenuProps {
   onClick: () => void;
 }
 
-export const MainLinks = ({ onClick }: MainLinksProps) => {
+export const Menu = ({ onClick }: MenuProps) => {
   const { pathname } = useLocation();
   const { Link } = useNavigateWithQuery();
 
