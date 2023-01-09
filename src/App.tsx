@@ -18,12 +18,12 @@ const App = () => {
       </Route>
       <Route path={routes.login.path} element={routes.login.component} />
       <Route path={routes.register.path} element={routes.register.component} />
-      <Route element={routes.base.component}>
+      {/* <Route element={routes.base.component}>
         <Route
           path={routes.notFound.path}
           element={routes.notFound.component}
         />
-      </Route>
+      </Route> */}
     </Routes>
   );
 };

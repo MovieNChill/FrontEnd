@@ -7,14 +7,19 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import { mediaInfos } from '../constants/routes';
-import { useNavigateWithQuery } from '../hooks/useNavigateWithQuery';
+import { MediaLightDto } from '../entities/mediaDtos';
 import media1 from './../assets/media1.svg';
 import media2 from './../assets/media2.svg';
 import media3 from './../assets/media3.svg';
 import media4 from './../assets/media4.svg';
+import { MediaPoster } from './MediaPoster';
 
-const medias = [media1, media2, media3, media4];
+const medias: MediaLightDto[] = [
+  { id: 0, imgSrc: media1, title: 'bengz' },
+  { id: 1, imgSrc: media2, title: 'bengz' },
+  { id: 2, imgSrc: media3, title: 'bengz' },
+  { id: 3, imgSrc: media4, title: 'bengz' },
+];
 
 interface Props {
   title?: string;
@@ -24,7 +29,6 @@ export const MediasRow = ({ title }: Props) => {
   const theme = useMantineTheme();
   const lg = useMediaQuery(`(max-width: ${theme.breakpoints.lg}px)`);
   const xs = useMediaQuery(`(max-width: ${theme.breakpoints.xs}px)`);
-  const { navigate } = useNavigateWithQuery();
 
   return (
     <div>
@@ -66,12 +70,7 @@ export const MediasRow = ({ title }: Props) => {
         }}>
         {medias.map((media, index) => (
           <Carousel.Slide key={index}>
-            <img
-              onClick={() => navigate(mediaInfos.getPath('bengz'))}
-              style={{ cursor: 'pointer' }}
-              src={media}
-              alt="media"
-            />
+            <MediaPoster media={media} />
           </Carousel.Slide>
         ))}
       </Carousel>

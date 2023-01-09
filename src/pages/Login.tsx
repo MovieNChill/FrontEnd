@@ -1,4 +1,5 @@
 import {
+  Anchor,
   AppShell,
   Box,
   Button,
@@ -7,7 +8,6 @@ import {
   PasswordInput,
   Text,
   TextInput,
-  UnstyledButton,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
@@ -81,10 +81,9 @@ export const Login = () => {
           <Text size="xs" align="center" c="dimmed">
             Don't have an account ?
           </Text>
-
-          <UnstyledButton ml="sm" component={Link} to={register.path}>
-            <Text size="xs">Sign Up</Text>
-          </UnstyledButton>
+          <Anchor size="xs" ml="sm" component={Link} to={register.path}>
+            Sign Up
+          </Anchor>
         </Group>
       </Box>
     </AppShell>

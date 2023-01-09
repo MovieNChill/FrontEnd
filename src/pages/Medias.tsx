@@ -2,9 +2,11 @@ import { Group, Text } from '@mantine/core';
 import { forwardRef } from 'react';
 import * as Icons from 'tabler-icons-react';
 import { MediasRow } from '../components/MediasRow';
+import { MediasScroll } from '../components/MediasScroll';
 import { ThemeColoredIcon } from '../components/ThemeColoredIcon';
 import { getCurrentMonth } from '../helpers/dateHelper';
 import { Platform } from '../hooks/mediasHooks';
+import { useNavigateWithQuery } from '../hooks/useNavigateWithQuery';
 
 type SelectPlatformItemProps = Platform & React.ComponentPropsWithoutRef<'div'>;
 
@@ -27,6 +29,8 @@ export const Medias = () => {
   // const [selectedPlatform, setSelectedPlatform] = useState<Platform>();
 
   // const { search } = useLocation();
+
+  const { searchParams } = useNavigateWithQuery();
 
   return (
     <>
@@ -76,9 +80,15 @@ export const Medias = () => {
           data={platforms}
         />
       </Group> */}
-      <MediasRow title="Upcoming" />
-      <MediasRow title="Recommended" />
-      <MediasRow title={`Popular movies on ${getCurrentMonth()}`} />
+      {searchParams.q || searchParams.mood ? (
+        <MediasScroll />
+      ) : (
+        <>
+          <MediasRow title="Upcoming" />
+          <MediasRow title="Recommended" />
+          <MediasRow title={`Popular movies on ${getCurrentMonth()}`} />
+        </>
+      )}
     </>
   );
 };

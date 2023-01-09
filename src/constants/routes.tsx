@@ -31,7 +31,7 @@ export const medias = {
 export const mediaInfos = {
   path: '/medias/:id',
   component: <MediaInfos />,
-  getPath: (id: string) => `/medias/${id}`,
+  getPath: (id: number) => `/medias/${id}`,
 };
 export const library = {
   path: '/library',
