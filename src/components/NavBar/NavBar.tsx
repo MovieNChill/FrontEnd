@@ -29,6 +29,7 @@ export const NavBar = ({ menuOpened, setMenuOpened }: Props) => {
       p="md"
       hiddenBreakpoint="sm"
       hidden={!menuOpened}
+      styles={() => ({})}
       width={{
         sm: 250,
         md: 250,

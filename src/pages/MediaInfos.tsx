@@ -1,15 +1,18 @@
 import {
+  ActionIcon,
   Badge,
   Divider,
   Group,
+  Rating,
   Stack,
   Text,
   useMantineTheme,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import { Star } from 'tabler-icons-react';
+import { Bookmark } from 'tabler-icons-react';
 import media from '../assets/media1.svg';
 import { MediasRow } from '../components/MediasRow';
+import { ThemeColoredIcon } from '../components/ThemeColoredIcon';
 
 export const MediaInfos = () => {
   const theme = useMantineTheme();
@@ -23,12 +26,11 @@ export const MediaInfos = () => {
             <Text weight="bold" size="lg">
               Top Gun: Maverick • 2022 • PG-13 • 2h 10m
             </Text>
-
-            <Text weight="bold">
-              <Star style={{ height: 18, width: 18 }} />
-              8.1
-            </Text>
-            <Text c="dimmed">| 350k</Text>
+            <Group spacing="xs">
+              <Rating defaultValue={1} size="sm" readOnly count={1} />
+              <Text weight="bold">8.1</Text>
+              <Text c="dimmed">| 350k</Text>
+            </Group>
 
             <Badge color="gray" variant="outline">
               Action
@@ -43,6 +45,7 @@ export const MediaInfos = () => {
             TOP GUN's elite graduates on a mission that demands the ultimate
             sacrifice from those chosen to fly it.
           </Text>
+
           <Group spacing="sm">
             <Stack spacing="sm">
               <Group spacing="xs">
@@ -62,6 +65,14 @@ export const MediaInfos = () => {
               <Group spacing="xs">
                 <Text weight="bold">Stars :</Text>
                 <Text>Tom Cruise, Miles Teller, Val Kilmer</Text>
+              </Group>
+            </Stack>
+            <Stack spacing="sm">
+              <Group position="apart">
+                <Rating defaultValue={0} size="sm" count={5} />
+                <ActionIcon>
+                  <ThemeColoredIcon component={Bookmark} />
+                </ActionIcon>
               </Group>
             </Stack>
           </Group>
