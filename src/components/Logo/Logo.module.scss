@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: fit-content;
+
+  &:hover{
+    filter: drop-shadow(0 0 2em #E8E8E8AA);
+    cursor: pointer;
+  }
+
+  .logo {
+    height: 52px;
+    &.inverted {
+      -webkit-filter: invert(1);
+      filter: invert(1);
+    }
+  }
+
+  .title {
+    line-height: 1;
+  }
+}
