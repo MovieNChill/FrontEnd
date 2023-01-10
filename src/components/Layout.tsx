@@ -9,11 +9,11 @@ import {
 } from '@mantine/core';
 import { useScrollLock } from '@mantine/hooks';
 import { Outlet } from 'react-router-dom';
-import { Logo } from './Logo';
-import { NavBar } from './NavBar';
-import { SearchBar } from './SearchBar';
+import Logo from './Logo';
+import NavBar from './NavBar';
+import SearchBar from './SearchBar';
 
-export const Layout = () => {
+const Layout = () => {
   const { colorScheme } = useMantineColorScheme();
   const [menuOpened, setMenuOpened] = useScrollLock(false);
 
@@ -52,3 +52,5 @@ export const Layout = () => {
     </AppShell>
   );
 };
+
+export default Layout;

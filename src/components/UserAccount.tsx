@@ -8,7 +8,7 @@ import {
 } from '@mantine/core';
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons';
 
-export const UserAccount = () => {
+const UserAccount = () => {
   const theme = useMantineTheme();
 
   return (
@@ -65,3 +65,5 @@ export const UserAccount = () => {
     </Box>
   );
 };
+
+export default UserAccount;

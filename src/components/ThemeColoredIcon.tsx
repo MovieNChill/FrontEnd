@@ -33,6 +33,8 @@ const _ThemeColoredIcon = forwardRef<Icon, Props>(
   },
 );
 
-export const ThemeColoredIcon = createPolymorphicComponent<Icon, Props>(
+const ThemeColoredIcon = createPolymorphicComponent<Icon, Props>(
   _ThemeColoredIcon,
 );
+
+export default ThemeColoredIcon;

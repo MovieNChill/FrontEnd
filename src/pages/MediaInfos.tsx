@@ -11,10 +11,10 @@ import {
 import { useMediaQuery } from '@mantine/hooks';
 import { Bookmark } from 'tabler-icons-react';
 import media from '../assets/media1.svg';
-import { MediasRow } from '../components/MediasRow';
-import { ThemeColoredIcon } from '../components/ThemeColoredIcon';
+import MediasRow from '../components/MediasRow';
+import ThemeColoredIcon from '../components/ThemeColoredIcon';
 
-export const MediaInfos = () => {
+const MediaInfos = () => {
   const theme = useMantineTheme();
   const sm = useMediaQuery(`(max-width: ${theme.breakpoints.sm}px)`);
   return (
@@ -82,3 +82,5 @@ export const MediaInfos = () => {
     </>
   );
 };
+
+export default MediaInfos;

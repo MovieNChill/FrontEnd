@@ -4,7 +4,7 @@ import media1 from './../assets/media1.svg';
 import media2 from './../assets/media2.svg';
 import media3 from './../assets/media3.svg';
 import media4 from './../assets/media4.svg';
-import { MediaPoster } from './MediaPoster';
+import MediaPoster from './MediaPoster';
 
 const medias: MediaLightDto[] = [
   { id: 0, imgSrc: media1, title: 'bengz' },
@@ -29,7 +29,7 @@ const medias: MediaLightDto[] = [
   { id: 19, imgSrc: media4, title: 'bengz' },
 ];
 
-export const MediasScroll = () => {
+const MediasScroll = () => {
   return (
     <SimpleGrid
       cols={4}
@@ -48,3 +48,5 @@ export const MediasScroll = () => {
     </SimpleGrid>
   );
 };
+
+export default MediasScroll;

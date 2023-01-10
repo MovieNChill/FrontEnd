@@ -9,10 +9,10 @@ import {
 } from '@mantine/core';
 import { Link } from 'react-router-dom';
 import { Logout, Moon, Sun } from 'tabler-icons-react';
-import { Logo } from '../Logo';
-import { Menu } from '../Menu';
-import { ThemeColoredIcon } from '../ThemeColoredIcon';
-import { UserAccount } from '../UserAccount';
+import Logo from '../Logo';
+import Menu from '../Menu';
+import ThemeColoredIcon from '../ThemeColoredIcon';
+import UserAccount from '../UserAccount';
 import flags from './../../assets/flags.svg';
 import { login } from './../../constants/routes';
 import styles from './NavBar.module.scss';
@@ -22,7 +22,7 @@ interface Props {
   setMenuOpened: (value: boolean) => void;
 }
 
-export const NavBar = ({ menuOpened, setMenuOpened }: Props) => {
+const NavBar = ({ menuOpened, setMenuOpened }: Props) => {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   return (
     <MNavbar
@@ -80,3 +80,5 @@ export const NavBar = ({ menuOpened, setMenuOpened }: Props) => {
     </MNavbar>
   );
 };
+
+export default NavBar;

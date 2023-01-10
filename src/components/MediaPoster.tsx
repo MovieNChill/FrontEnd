@@ -7,7 +7,7 @@ interface Props {
   media?: MediaLightDto;
 }
 
-export const MediaPoster = ({ media }: Props) => {
+const MediaPoster = ({ media }: Props) => {
   const { navigate } = useNavigateWithQuery();
   return (
     <Skeleton visible={!media} width={200} height={315}>
@@ -24,3 +24,5 @@ export const MediaPoster = ({ media }: Props) => {
     </Skeleton>
   );
 };
+
+export default MediaPoster;

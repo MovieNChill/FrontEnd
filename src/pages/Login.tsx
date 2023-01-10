@@ -12,8 +12,8 @@ import {
 import { useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import { Link, useNavigate } from 'react-router-dom';
-import { GoogleButton } from '../components/GoogleButton';
-import { Logo } from '../components/Logo';
+import GoogleButton from '../components/GoogleButton';
+import Logo from '../components/Logo';
 import { home, register } from '../constants/routes';
 
 interface FormValues {
@@ -21,7 +21,7 @@ interface FormValues {
   password: string;
 }
 
-export const Login = () => {
+const Login = () => {
   const [visiblePassword, { toggle }] = useDisclosure(false);
   const navigate = useNavigate();
 
@@ -89,3 +89,5 @@ export const Login = () => {
     </AppShell>
   );
 };
+
+export default Login;

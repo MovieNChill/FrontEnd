@@ -4,7 +4,7 @@ import { Search } from 'tabler-icons-react';
 import { medias } from '../constants/routes';
 import { useNavigateWithQuery } from '../hooks/useNavigateWithQuery';
 
-export const SearchBar = () => {
+const SearchBar = () => {
   const { colorScheme } = useMantineColorScheme();
   //const moods = useMoods();
   const { navigate, clearSearchParam, searchParams } = useNavigateWithQuery();
@@ -135,3 +135,5 @@ export const SearchBar = () => {
     </div>
   );
 };
+
+export default SearchBar;

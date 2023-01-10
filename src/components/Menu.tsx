@@ -2,13 +2,13 @@ import { NavLink } from '@mantine/core';
 import { useLocation } from 'react-router-dom';
 import { forum, home, library, medias } from '../constants/routes';
 import { useNavigateWithQuery } from '../hooks/useNavigateWithQuery';
-import { ThemeColoredIcon } from './ThemeColoredIcon';
+import ThemeColoredIcon from './ThemeColoredIcon';
 
 interface MenuProps {
   onClick: () => void;
 }
 
-export const Menu = ({ onClick }: MenuProps) => {
+const Menu = ({ onClick }: MenuProps) => {
   const { pathname } = useLocation();
   const { Link } = useNavigateWithQuery();
 
@@ -50,3 +50,5 @@ export const Menu = ({ onClick }: MenuProps) => {
     </>
   );
 };
+
+export default Menu;

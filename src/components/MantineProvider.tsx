@@ -10,7 +10,7 @@ interface Props {
   children: ReactNode;
 }
 
-export const MantineProvider = ({ children }: Props) => {
+const MantineProvider = ({ children }: Props) => {
   //https://mantine.dev/guides/dark-theme/
 
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
@@ -70,3 +70,5 @@ export const MantineProvider = ({ children }: Props) => {
     </ColorSchemeProvider>
   );
 };
+
+export default MantineProvider;

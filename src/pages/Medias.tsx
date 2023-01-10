@@ -1,9 +1,9 @@
 import { Group, Text } from '@mantine/core';
 import { forwardRef } from 'react';
 import * as Icons from 'tabler-icons-react';
-import { MediasRow } from '../components/MediasRow';
-import { MediasScroll } from '../components/MediasScroll';
-import { ThemeColoredIcon } from '../components/ThemeColoredIcon';
+import MediasRow from '../components/MediasRow';
+import MediasScroll from '../components/MediasScroll';
+import ThemeColoredIcon from '../components/ThemeColoredIcon';
 import { getCurrentMonth } from '../helpers/dateHelper';
 import { Platform } from '../hooks/mediasHooks';
 import { useNavigateWithQuery } from '../hooks/useNavigateWithQuery';
@@ -21,7 +21,7 @@ const SelectPlatformItem = forwardRef<HTMLDivElement, SelectPlatformItemProps>(
   ),
 );
 
-export const Medias = () => {
+const Medias = () => {
   // const categories = useCategories();
   // const platforms = usePlatforms();
 
@@ -92,3 +92,5 @@ export const Medias = () => {
     </>
   );
 };
+
+export default Medias;

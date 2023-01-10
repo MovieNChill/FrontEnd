@@ -4,7 +4,7 @@ import { useNavigateWithQuery } from '../../hooks/useNavigateWithQuery';
 import styles from './Logo.module.scss';
 import logo from '/logo.svg';
 
-export const Logo = () => {
+const Logo = () => {
   const { navigate } = useNavigateWithQuery();
   const { colorScheme } = useMantineColorScheme();
 
@@ -24,3 +24,5 @@ export const Logo = () => {
     </div>
   );
 };
+
+export default Logo;

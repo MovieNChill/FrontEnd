@@ -1,7 +1,7 @@
 import { Button } from '@mantine/core';
 import { BrandGoogle } from 'tabler-icons-react';
 
-export const GoogleButton = () => {
+const GoogleButton = () => {
   const isRegister = location.pathname === '/register';
   return (
     <Button
@@ -14,3 +14,5 @@ export const GoogleButton = () => {
     </Button>
   );
 };
+
+export default GoogleButton;

@@ -2,7 +2,7 @@ import { Box, Text, Title } from '@mantine/core';
 import { Navigate, useLocation } from 'react-router-dom';
 import { base, home } from '../constants/routes';
 
-export const NotFound = () => {
+const NotFound = () => {
   const { pathname } = useLocation();
 
   if (pathname === base.path) return <Navigate to={home.path} />;
@@ -35,3 +35,5 @@ export const NotFound = () => {
     </Box>
   );
 };
+
+export default NotFound;

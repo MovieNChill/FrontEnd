@@ -1,5 +1,7 @@
-import { MediasRow } from '../components/MediasRow';
+import MediasRow from '../components/MediasRow';
 
-export const Home = () => {
+const Home = () => {
   return <MediasRow title="Recommended for you" />;
 };
+
+export default Home;

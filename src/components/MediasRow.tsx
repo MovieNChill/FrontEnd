@@ -12,7 +12,7 @@ import media1 from './../assets/media1.svg';
 import media2 from './../assets/media2.svg';
 import media3 from './../assets/media3.svg';
 import media4 from './../assets/media4.svg';
-import { MediaPoster } from './MediaPoster';
+import MediaPoster from './MediaPoster';
 
 const medias: MediaLightDto[] = [
   { id: 0, imgSrc: media1, title: 'bengz' },
@@ -25,7 +25,7 @@ interface Props {
   title?: string;
 }
 
-export const MediasRow = ({ title }: Props) => {
+const MediasRow = ({ title }: Props) => {
   const theme = useMantineTheme();
   const lg = useMediaQuery(`(max-width: ${theme.breakpoints.lg}px)`);
   const xs = useMediaQuery(`(max-width: ${theme.breakpoints.xs}px)`);
@@ -77,3 +77,5 @@ export const MediasRow = ({ title }: Props) => {
     </div>
   );
 };
+
+export default MediasRow;
