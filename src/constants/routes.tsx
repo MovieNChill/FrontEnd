@@ -17,7 +17,7 @@ export const base = {
   component: <Layout />,
 };
 export const home = {
-  path: '/home',
+  path: '/',
   icon: HomeIcon,
   component: <Home />,
   label: 'Home',
