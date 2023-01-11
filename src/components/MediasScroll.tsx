@@ -1,51 +1,115 @@
 import { Box, SimpleGrid } from '@mantine/core';
-import { MediaLightDto } from '../entities/mediaDtos';
+import {
+  completeNavigationProgress,
+  NavigationProgress,
+  resetNavigationProgress,
+  startNavigationProgress,
+} from '@mantine/nprogress';
+import { useCallback, useEffect, useState } from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { MediaDTO } from '../entities/media';
+import { getMediaWithFilter } from '../services/mediaService';
 import media1 from './../assets/media1.svg';
 import media2 from './../assets/media2.svg';
 import media3 from './../assets/media3.svg';
 import media4 from './../assets/media4.svg';
 import MediaPoster from './MediaPoster';
 
-const medias: MediaLightDto[] = [
-  { id: 0, imgSrc: media1, title: 'bengz' },
-  { id: 1, imgSrc: media2, title: 'bengz' },
-  { id: 2, imgSrc: media3, title: 'bengz' },
-  { id: 3, imgSrc: media4, title: 'bengz' },
-  { id: 4, imgSrc: media1, title: 'bengz' },
-  { id: 5, imgSrc: media2, title: 'bengz' },
-  { id: 6, imgSrc: media3, title: 'bengz' },
-  { id: 7, imgSrc: media4, title: 'bengz' },
-  { id: 8, imgSrc: media1, title: 'bengz' },
-  { id: 9, imgSrc: media2, title: 'bengz' },
-  { id: 10, imgSrc: media3, title: 'bengz' },
-  { id: 11, imgSrc: media4, title: 'bengz' },
-  { id: 12, imgSrc: media1, title: 'bengz' },
-  { id: 13, imgSrc: media2, title: 'bengz' },
-  { id: 14, imgSrc: media3, title: 'bengz' },
-  { id: 15, imgSrc: media4, title: 'bengz' },
-  { id: 16, imgSrc: media1, title: 'bengz' },
-  { id: 17, imgSrc: media2, title: 'bengz' },
-  { id: 18, imgSrc: media3, title: 'bengz' },
-  { id: 19, imgSrc: media4, title: 'bengz' },
+const mediasKek: MediaDTO[] = [
+  { id: 0, imgUrl: media1, name: 'bengz' },
+  { id: 1, imgUrl: media2, name: 'bengz' },
+  { id: 2, imgUrl: media3, name: 'bengz' },
+  { id: 3, imgUrl: media4, name: 'bengz' },
+  { id: 4, imgUrl: media1, name: 'bengz' },
+  { id: 5, imgUrl: media2, name: 'bengz' },
+  { id: 6, imgUrl: media3, name: 'bengz' },
+  { id: 7, imgUrl: media4, name: 'bengz' },
+  { id: 8, imgUrl: media1, name: 'bengz' },
+  { id: 9, imgUrl: media2, name: 'bengz' },
+  { id: 10, imgUrl: media3, name: 'bengz' },
+  { id: 11, imgUrl: media4, name: 'bengz' },
+  { id: 12, imgUrl: media1, name: 'bengz' },
+  { id: 13, imgUrl: media2, name: 'bengz' },
+  { id: 14, imgUrl: media3, name: 'bengz' },
+  { id: 15, imgUrl: media4, name: 'bengz' },
+  { id: 16, imgUrl: media1, name: 'bengz' },
+  { id: 17, imgUrl: media2, name: 'bengz' },
+  { id: 18, imgUrl: media3, name: 'bengz' },
+  { id: 19, imgUrl: media4, name: 'bengz' },
 ];
 
-const MediasScroll = () => {
+interface Props {
+  q: string;
+}
+
+const pageSize = 12;
+
+const MediasScroll = ({ q }: Props) => {
+  const [medias, setMedias] = useState<MediaDTO[]>([]);
+  const [nextPage, setNextPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+
+  const mediasFetch = useCallback(async () => {
+    resetNavigationProgress();
+    startNavigationProgress();
+
+    const res = await getMediaWithFilter({
+      page: nextPage,
+      size: pageSize,
+      //search: q,
+    });
+    // const res: MediaDTO[] = await new Promise((resolve) => {
+    //   setTimeout(() => resolve(mediasKek.slice(0, pageSize)), 10000);
+    // });
+    if (res.length < pageSize) setHasMore(false);
+    setMedias((p) => [...p, ...res]);
+    setNextPage((p) => p + 1);
+    completeNavigationProgress();
+    return res;
+  }, [q, nextPage, setMedias]);
+
+  useEffect(() => {
+    mediasFetch();
+  }, []);
+
+  const renderGrid = (_medias?: MediaDTO[]) => {
+    const __medias = _medias ?? Array.from({ length: pageSize });
+    console.log(__medias);
+    return (
+      <SimpleGrid
+        cols={4}
+        spacing="md"
+        verticalSpacing="xl"
+        breakpoints={[
+          { maxWidth: 'lg', cols: 2, spacing: 'md' },
+          { maxWidth: 'sm', cols: 2, spacing: 'xs' },
+          { maxWidth: 'xs', cols: 1, spacing: 'xs' },
+        ]}>
+        {__medias.map((media, i) => (
+          <Box key={i} mx="auto">
+            <MediaPoster media={media} />
+          </Box>
+        ))}
+      </SimpleGrid>
+    );
+  };
+
   return (
-    <SimpleGrid
-      cols={4}
-      spacing="md"
-      verticalSpacing="xl"
-      breakpoints={[
-        { maxWidth: 'lg', cols: 2, spacing: 'md' },
-        { maxWidth: 'sm', cols: 2, spacing: 'xs' },
-        { maxWidth: 'xs', cols: 1, spacing: 'xs' },
-      ]}>
-      {medias.map((media, index) => (
-        <Box mx="auto">
-          <MediaPoster media={index <= 10 ? media : undefined} />
-        </Box>
-      ))}
-    </SimpleGrid>
+    <>
+      <NavigationProgress />
+      <InfiniteScroll
+        dataLength={medias.length}
+        next={mediasFetch}
+        hasMore={hasMore}
+        loader={renderGrid()}
+        endMessage={
+          <p style={{ textAlign: 'center' }}>
+            <b>Yay! You have seen it all</b>
+          </p>
+        }>
+        {renderGrid(medias)}
+      </InfiniteScroll>
+    </>
   );
 };
 

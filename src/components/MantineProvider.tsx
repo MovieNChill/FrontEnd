@@ -3,23 +3,28 @@ import {
   ColorSchemeProvider,
   MantineProvider as MProvider,
 } from '@mantine/core';
-import { useLocalStorage } from '@mantine/hooks';
-import { ReactNode } from 'react';
+import { useColorScheme, useLocalStorage } from '@mantine/hooks';
+import { ReactNode, useEffect } from 'react';
 
 interface Props {
   children: ReactNode;
 }
 
 const MantineProvider = ({ children }: Props) => {
-  //https://mantine.dev/guides/dark-theme/
-
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
     key: 'mantine-color-scheme',
-    defaultValue: 'dark',
+    defaultValue: 'light',
     getInitialValueInEffect: true,
   });
+
+  const preferredColorScheme = useColorScheme();
+
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
+
+  useEffect(() => {
+    toggleColorScheme(preferredColorScheme);
+  }, [preferredColorScheme]);
 
   return (
     <ColorSchemeProvider

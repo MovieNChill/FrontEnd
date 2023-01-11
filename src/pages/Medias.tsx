@@ -80,8 +80,8 @@ const Medias = () => {
           data={platforms}
         />
       </Group> */}
-      {searchParams.q || searchParams.mood ? (
-        <MediasScroll />
+      {searchParams.q ? (
+        <MediasScroll q={searchParams.q} />
       ) : (
         <>
           <MediasRow title="Upcoming" />

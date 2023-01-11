@@ -1,7 +1,9 @@
 import {
   ActionIcon,
   Badge,
+  Col,
   Divider,
+  Grid,
   Group,
   Rating,
   Stack,
@@ -19,63 +21,79 @@ const MediaInfos = () => {
   const sm = useMediaQuery(`(max-width: ${theme.breakpoints.sm}px)`);
   return (
     <>
+      <Grid gutter={50}>
+        <Col xl="content" span={12} style={{ textAlign: 'center' }}>
+          <img src={media} alt="poster" />
+        </Col>
+        <Col xl="auto">
+          <Grid>
+            <Col span={12}>
+              <Group spacing="sm">
+                <Text weight="bold" size="lg">
+                  Top Gun: Maverick • 2022 • PG-13 • 2h 10m
+                </Text>
+                <Group spacing="xs">
+                  <Rating defaultValue={1} size="sm" readOnly count={1} />
+                  <Text weight="bold">8.1</Text>
+                  <Text c="dimmed">| 350k</Text>
+                </Group>
+
+                <Badge color="gray" variant="outline">
+                  Action
+                </Badge>
+                <Badge color="gray" variant="outline">
+                  Drama
+                </Badge>
+              </Group>
+              <Text>
+                After thirty years, Maverick is still pushing the envelope as a
+                top naval aviator, but must confront ghosts of his past when he
+                leads TOP GUN's elite graduates on a mission that demands the
+                ultimate sacrifice from those chosen to fly it.
+              </Text>
+            </Col>
+            <Col span={12}>
+              <Grid>
+                <Col span={8}>
+                  <Stack spacing="sm">
+                    <Group spacing="xs">
+                      <Text weight="bold">Director :</Text>
+                      <Text>Joseph Kosinski</Text>
+                    </Group>
+
+                    <Divider />
+
+                    <Group spacing="xs">
+                      <Text weight="bold">Writers :</Text>
+                      <Text>Eric Warren Singer, Peter Craig, Justin Marks</Text>
+                    </Group>
+
+                    <Divider />
+
+                    <Group spacing="xs">
+                      <Text weight="bold">Stars :</Text>
+                      <Text>Tom Cruise, Miles Teller, Val Kilmer</Text>
+                    </Group>
+                  </Stack>
+                </Col>
+                <Col span={4}>
+                  <Stack spacing="sm">
+                    <Group position="apart">
+                      <Rating defaultValue={0} size="sm" count={5} />
+                      <ActionIcon>
+                        <ThemeColoredIcon component={Bookmark} />
+                      </ActionIcon>
+                    </Group>
+                  </Stack>
+                </Col>
+              </Grid>
+            </Col>
+          </Grid>
+        </Col>
+      </Grid>
       <Group align={sm ? 'center' : 'flex-start'} spacing="sm" noWrap={!sm}>
-        <img src={media} alt="poster" style={{ margin: 'auto' }} />
         <Stack spacing="sm">
-          <Group spacing="sm">
-            <Text weight="bold" size="lg">
-              Top Gun: Maverick • 2022 • PG-13 • 2h 10m
-            </Text>
-            <Group spacing="xs">
-              <Rating defaultValue={1} size="sm" readOnly count={1} />
-              <Text weight="bold">8.1</Text>
-              <Text c="dimmed">| 350k</Text>
-            </Group>
-
-            <Badge color="gray" variant="outline">
-              Action
-            </Badge>
-            <Badge color="gray" variant="outline">
-              Drama
-            </Badge>
-          </Group>
-          <Text>
-            After thirty years, Maverick is still pushing the envelope as a top
-            naval aviator, but must confront ghosts of his past when he leads
-            TOP GUN's elite graduates on a mission that demands the ultimate
-            sacrifice from those chosen to fly it.
-          </Text>
-
-          <Group spacing="sm">
-            <Stack spacing="sm">
-              <Group spacing="xs">
-                <Text weight="bold">Director :</Text>
-                <Text>Joseph Kosinski</Text>
-              </Group>
-
-              <Divider />
-
-              <Group spacing="xs">
-                <Text weight="bold">Writers :</Text>
-                <Text>Eric Warren Singer, Peter Craig, Justin Marks</Text>
-              </Group>
-
-              <Divider />
-
-              <Group spacing="xs">
-                <Text weight="bold">Stars :</Text>
-                <Text>Tom Cruise, Miles Teller, Val Kilmer</Text>
-              </Group>
-            </Stack>
-            <Stack spacing="sm">
-              <Group position="apart">
-                <Rating defaultValue={0} size="sm" count={5} />
-                <ActionIcon>
-                  <ThemeColoredIcon component={Bookmark} />
-                </ActionIcon>
-              </Group>
-            </Stack>
-          </Group>
+          <Group spacing="sm" position="apart"></Group>
         </Stack>
       </Group>
       <MediasRow title="Similar Movies" />

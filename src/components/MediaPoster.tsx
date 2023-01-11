@@ -1,10 +1,10 @@
 import { Skeleton } from '@mantine/core';
 import { mediaInfos } from '../constants/routes';
-import { MediaLightDto } from '../entities/mediaDtos';
+import { MediaDTO } from '../entities/media';
 import { useNavigateWithQuery } from '../hooks/useNavigateWithQuery';
 
 interface Props {
-  media?: MediaLightDto;
+  media?: MediaDTO;
 }
 
 const MediaPoster = ({ media }: Props) => {
@@ -15,7 +15,10 @@ const MediaPoster = ({ media }: Props) => {
         <img
           onClick={() => navigate(mediaInfos.getPath(media.id))}
           style={{ cursor: 'pointer' }}
-          src={media.imgSrc}
+          src={
+            media.imgUrl ??
+            'https://m.media-amazon.com/images/I/812KlOw6iYL._AC_SL1500_.jpg'
+          }
           alt="media"
           width={200}
           height={315}
