@@ -1,5 +1,6 @@
 import {
   Home as HomeIcon,
+  Layout,
   Messages,
   PlaylistAdd,
   Video,
@@ -13,7 +14,7 @@ import Register from '../pages/Register';
 
 export const base = {
   path: '/',
-  component: <Home />,
+  component: <Layout />,
 };
 export const home = {
   path: '/home',
