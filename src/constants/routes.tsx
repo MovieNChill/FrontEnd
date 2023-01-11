@@ -1,10 +1,10 @@
 import {
   Home as HomeIcon,
-  Layout,
   Messages,
   PlaylistAdd,
   Video,
 } from 'tabler-icons-react';
+import Layout from '../components/Layout';
 import Home from '../pages/Home';
 import Login from '../pages/Login';
 import MediaInfos from '../pages/MediaInfos';
