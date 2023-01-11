@@ -7,8 +7,9 @@ import {
   ScrollArea,
   useMantineColorScheme,
 } from '@mantine/core';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Logout, Moon, Sun } from 'tabler-icons-react';
+import { Logout, Moon, Sun, SunMoon } from 'tabler-icons-react';
 import Logo from '../Logo';
 import Menu from '../Menu';
 import ThemeColoredIcon from '../ThemeColoredIcon';
@@ -23,7 +24,66 @@ interface Props {
 }
 
 const NavBar = ({ menuOpened, setMenuOpened }: Props) => {
+  const [customColorScheme, setcustomColorScheme] = useState<
+    'light' | 'dark' | 'system'
+  >('system');
+  const toggleCustomColorScheme = () => {
+    switch (customColorScheme) {
+      case 'light':
+        setcustomColorScheme('dark');
+        break;
+      case 'dark':
+        setcustomColorScheme('system');
+        break;
+      case 'system':
+        setcustomColorScheme('light');
+        break;
+    }
+  };
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+  useEffect(() => {
+    if (customColorScheme === 'system') {
+      if (matchMedia('(prefers-color-scheme: dark)').matches) {
+        toggleColorScheme('dark');
+      } else {
+        toggleColorScheme('light');
+      }
+    } else {
+      toggleColorScheme(customColorScheme);
+    }
+  }, [customColorScheme]);
+  useEffect(() => {
+    const darkQuery = matchMedia('(prefers-color-scheme: dark)');
+    const lightQuery = matchMedia('(prefers-color-scheme: light)');
+    const darkListener = (e: MediaQueryListEvent) => {
+      if (e.matches && customColorScheme === 'system') {
+        toggleColorScheme('dark');
+      }
+    };
+    const lightListener = (e: MediaQueryListEvent) => {
+      if (e.matches && customColorScheme === 'system') {
+        toggleColorScheme('light');
+      }
+    };
+    darkQuery.addEventListener('change', darkListener);
+    lightQuery.addEventListener('change', lightListener);
+    return () => {
+      darkQuery.removeEventListener('change', darkListener);
+      lightQuery.removeEventListener('change', lightListener);
+    };
+  }, [colorScheme, toggleColorScheme]);
+
+  const renderSwitchThemeIcon = () => {
+    switch (customColorScheme) {
+      case 'light':
+        return Moon;
+      case 'dark':
+        return SunMoon;
+      case 'system':
+        return Sun;
+    }
+  };
+
   return (
     <MNavbar
       p="md"
@@ -49,10 +109,8 @@ const NavBar = ({ menuOpened, setMenuOpened }: Props) => {
       </MNavbar.Section>
       <MNavbar.Section mt="md">
         <Group position="center" spacing="xl">
-          <ActionIcon onClick={() => toggleColorScheme()}>
-            <ThemeColoredIcon
-              component={colorScheme === 'light' ? Moon : Sun}
-            />
+          <ActionIcon onClick={() => toggleCustomColorScheme()}>
+            <ThemeColoredIcon component={renderSwitchThemeIcon()} />
           </ActionIcon>
           <ActionIcon
             component="img"
