@@ -50,7 +50,9 @@ const NavBar = ({ menuOpened, setMenuOpened }: Props) => {
       <MNavbar.Section mt="md">
         <Group position="center" spacing="xl">
           <ActionIcon onClick={() => toggleColorScheme()}>
-            <ThemeColoredIcon component={colorScheme === 'dark' ? Sun : Moon} />
+            <ThemeColoredIcon
+              component={colorScheme === 'light' ? Moon : Sun}
+            />
           </ActionIcon>
           <ActionIcon
             component="img"
