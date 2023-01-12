@@ -7,7 +7,7 @@
 import { mediaApi } from '../api/mediaApi';
 import type { GetMediaWithFilterParams, MediaDTO } from '../entities/media';
 
-export const getMediaWithFilter = (params: GetMediaWithFilterParams) => {
+export const getMediaWithFilter = (params?: GetMediaWithFilterParams) => {
   return mediaApi<MediaDTO[]>({ url: `/api/medias`, method: 'get', params });
 };
 

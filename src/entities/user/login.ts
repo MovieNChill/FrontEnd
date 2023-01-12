@@ -5,8 +5,7 @@
  * OpenAPI spec version: v0
  */
 
-export type GetMediaWithFilterParams = {
-  page?: number;
-  size?: number;
-  search?: string;
-};
+export interface Login {
+  login?: string;
+  password?: string;
+}
