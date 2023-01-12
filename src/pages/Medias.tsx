@@ -1,11 +1,11 @@
-import { Group, Text } from '@mantine/core';
-import { forwardRef } from 'react';
+import { Group, Select, Text } from '@mantine/core';
+import { forwardRef, useState } from 'react';
 import * as Icons from 'tabler-icons-react';
 import MediasRow from '../components/MediasRow';
 import MediasScroll from '../components/MediasScroll';
 import ThemeColoredIcon from '../components/ThemeColoredIcon';
 import { getCurrentMonth } from '../helpers/dateHelper';
-import { Platform } from '../hooks/mediasHooks';
+import { Platform, useCategories, usePlatforms } from '../hooks/mediasHooks';
 import { useNavigateWithQuery } from '../hooks/useNavigateWithQuery';
 
 type SelectPlatformItemProps = Platform & React.ComponentPropsWithoutRef<'div'>;
@@ -22,19 +22,17 @@ const SelectPlatformItem = forwardRef<HTMLDivElement, SelectPlatformItemProps>(
 );
 
 const Medias = () => {
-  // const categories = useCategories();
-  // const platforms = usePlatforms();
+  const categories = useCategories();
+  const platforms = usePlatforms();
 
-  // const [selectedCategory, setSelectedCategory] = useState<string | null>();
-  // const [selectedPlatform, setSelectedPlatform] = useState<Platform>();
-
-  // const { search } = useLocation();
+  const [selectedCategory, setSelectedCategory] = useState<string | null>();
+  const [selectedPlatform, setSelectedPlatform] = useState<Platform>();
 
   const { searchParams } = useNavigateWithQuery();
 
   return (
     <>
-      {/* <Group>
+      <Group>
         <Select
           aria-label="Category"
           placeholder="Category"
@@ -79,9 +77,9 @@ const Medias = () => {
           itemComponent={SelectPlatformItem}
           data={platforms}
         />
-      </Group> */}
-      {searchParams.q ? (
-        <MediasScroll q={searchParams.q} />
+      </Group>
+      {searchParams.q || searchParams.mood ? (
+        <MediasScroll q={searchParams.q} mood={searchParams.mood} />
       ) : (
         <>
           <MediasRow title="Upcoming" />

@@ -39,7 +39,8 @@ const mediasKek: MediaDTO[] = [
 ];
 
 interface Props {
-  q: string;
+  q?: string;
+  mood?: string;
 }
 
 const pageSize = 12;
@@ -58,9 +59,6 @@ const MediasScroll = ({ q }: Props) => {
       size: pageSize,
       //search: q,
     });
-    // const res: MediaDTO[] = await new Promise((resolve) => {
-    //   setTimeout(() => resolve(mediasKek.slice(0, pageSize)), 10000);
-    // });
     if (res.length < pageSize) setHasMore(false);
     setMedias((p) => [...p, ...res]);
     setNextPage((p) => p + 1);
