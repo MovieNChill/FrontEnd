@@ -7,7 +7,7 @@
 import type {
   User,
   Login,
-  ErrorResponseUser
+  CustomResponseUser
 } from '../entities/user'
 import { userApi } from '../api/baseApi'
 
@@ -47,7 +47,7 @@ export const login = (
 export const register = (
     user: User,
  ) => {
-      return userApi<ErrorResponseUser>(
+      return userApi<CustomResponseUser>(
       {url: `/api/users/register`, method: 'post',
       headers: {'Content-Type': 'application/json', },
       data: user

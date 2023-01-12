@@ -7,7 +7,6 @@ import {
   ScrollArea,
   useMantineColorScheme,
 } from '@mantine/core';
-import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Logout, Moon, Sun } from 'tabler-icons-react';
 import { login } from '../../constants/routes';
@@ -15,8 +14,6 @@ import Logo from '../Logo';
 import Menu from '../Menu';
 import ThemeColoredIcon from '../ThemeColoredIcon';
 import UserAccount from '../UserAccount';
-import flags from './../../assets/flags.svg';
-import styles from './NavBar.module.scss';
 
 interface Props {
   menuOpened: boolean;
@@ -54,13 +51,13 @@ const Navbar = ({ menuOpened, setMenuOpened }: Props) => {
           <ActionIcon onClick={() => toggleColorScheme()}>
             <ThemeColoredIcon component={colorScheme === 'dark' ? Sun : Moon} />
           </ActionIcon>
-          <ActionIcon
+          {/* <ActionIcon
             component="img"
             src={flags}
             className={colorScheme === 'light' ? '' : styles.inverted}
             alt="Toggle language"
             onClick={() => toggleColorScheme()}
-          />
+          /> */}
         </Group>
       </MNavbar.Section>
       <MNavbar.Section mt="md">

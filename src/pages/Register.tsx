@@ -12,10 +12,13 @@ import {
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import GoogleButton from '../components/GoogleButton';
 import Logo from '../components/Logo';
-import { home, login } from '../constants/routes';
+import { login } from '../constants/routes';
+import { CustomResponseUser, User } from '../entities/user';
+import { register } from '../services/userService';
 
 interface FormValues {
   pseudo: string;
@@ -26,6 +29,7 @@ interface FormValues {
 
 const Register = () => {
   const [visiblePassword, { toggle }] = useDisclosure(false);
+  const [apiError, setApiError] = useState<CustomResponseUser>();
   const navigate = useNavigate();
 
   const form = useForm<FormValues>({
@@ -37,16 +41,32 @@ const Register = () => {
     },
 
     validate: {
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
-      pseudo: (value) =>
-        (value! as string).length > 0 ? null : 'Pseudo must not be empty',
-      password: (value) => (value.length > 0 ? null : 'Password is required'),
+      email: (value) => {
+        if (apiError?.code == 'email_already_exists') return apiError.message;
+        if ((value! as string).length == 0) return 'Email must not be empty';
+        if (/^\S+@\S+$/.test(value) == null) return 'Invalid email';
+      },
+      pseudo: (value) => {
+        if (apiError?.code == 'pseudo_already_exists') return apiError.message;
+        if ((value! as string).length == 0) return 'Pseudo must not be empty';
+      },
+      password: (value) => {
+        if (apiError?.code == 'invalid_password') return apiError.message;
+        if ((value! as string).length == 0) return 'Password must not be empty';
+      },
     },
   });
 
-  const handleSubmit = (values: FormValues) => {
-    console.log(values);
-    navigate(home.path);
+  const handleSubmit = async (values: FormValues) => {
+    setApiError(undefined);
+    await register(values as User)
+      .then((res: CustomResponseUser) => {
+        // navigate(login.path);
+      })
+      .catch((err) => {
+        setApiError(err.response.data as CustomResponseUser);
+        console.log(apiError);
+      });
   };
 
   return (
