@@ -79,17 +79,20 @@ const MediasScroll = ({ q }: Props) => {
         size: pageSize,
         search: query ? mediaFilterHelper(query) : undefined,
       });
+      console.log(res);
       completeNavigationProgress();
       setState((prevState) => ({
-        medias: [...prevState.medias, ...res],
+        medias: [...prevState.medias],
         page: prevState.page + 1,
         hasMore: res.length === pageSize,
       }));
+      return res;
     },
     [],
   );
 
   useEffect(() => {
+    if (!viewport.current) return;
     if (
       viewport.current &&
       viewport.current.scrollHeight - viewport.current.scrollTop ===

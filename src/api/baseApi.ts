@@ -9,9 +9,10 @@ export default class BaseApi {
     });
   }
 
-  apiCall = async <T>(config: AxiosRequestConfig): Promise<T> => {
-    return await this.instance(config);
-  };
+  // apiCall = async <T>(config: AxiosRequestConfig): Promise<T> => {
+  //   const { data } = await this.instance(config);
+  //   return data;
+  // };
 }
 
 // export const createApi = (baseUrl: string) => new BaseApi(baseUrl).apiCall;
@@ -23,13 +24,15 @@ export default class BaseApi {
 // );
 
 export const mediaApi = async <T>(config: AxiosRequestConfig): Promise<T> => {
-  return await new BaseApi(
+  const { data } = await new BaseApi(
     'https://api-movienchill-mediaservice.azuremicroservices.io',
   ).instance(config);
+  return data;
 };
 
 export const userApi = async <T>(config: AxiosRequestConfig): Promise<T> => {
-  return await new BaseApi(
+  const { data } = await new BaseApi(
     'https://api-movienchill-userservice.azuremicroservices.io',
   ).instance(config);
+  return data;
 };
