@@ -5,9 +5,10 @@ import {
   resetNavigationProgress,
   startNavigationProgress,
 } from '@mantine/nprogress';
-import { useCallback, useEffect, useState } from 'react';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import { useEffect, useRef, useState } from 'react';
+import useAsyncFn from 'react-use/lib/useAsyncFn';
 import { MediaDTO } from '../entities/media';
+import { mediaFilterHelper } from '../helpers/mediaFilterHelper';
 import { getMediaWithFilter } from '../services/mediaService';
 import media1 from './../assets/media1.svg';
 import media2 from './../assets/media2.svg';
@@ -43,38 +44,77 @@ interface Props {
   mood?: string;
 }
 
+interface State {
+  medias: MediaDTO[];
+  page: number;
+  hasMore: boolean;
+}
+
 const pageSize = 12;
 
 const MediasScroll = ({ q }: Props) => {
-  const [medias, setMedias] = useState<MediaDTO[]>([]);
-  const [nextPage, setNextPage] = useState(0);
-  const [hasMore, setHasMore] = useState(true);
-
-  const mediasFetch = useCallback(async () => {
-    resetNavigationProgress();
-    startNavigationProgress();
-
-    const res = await getMediaWithFilter({
-      page: nextPage,
-      size: pageSize,
-      //search: q,
-    });
-    if (res.length < pageSize) setHasMore(false);
-    setMedias((p) => [...p, ...res]);
-    setNextPage((p) => p + 1);
-    completeNavigationProgress();
-    return res;
-  }, [q, nextPage, setMedias]);
+  const [{ medias, page, hasMore }, setState] = useState<State>({
+    medias: [],
+    page: 0,
+    hasMore: true,
+  });
 
   useEffect(() => {
-    mediasFetch();
-  }, []);
+    setState({
+      medias: [],
+      page: 0,
+      hasMore: true,
+    });
+  }, [q]);
+
+  const viewport = useRef<HTMLDivElement>(null);
+
+  const [mediasFn, getMedias] = useAsyncFn(
+    async (page: number, query?: string) => {
+      resetNavigationProgress();
+      startNavigationProgress();
+
+      const res = await getMediaWithFilter({
+        page: page,
+        size: pageSize,
+        search: query ? mediaFilterHelper(query) : undefined,
+      });
+      completeNavigationProgress();
+      setState((prevState) => ({
+        medias: [...prevState.medias, ...res],
+        page: prevState.page + 1,
+        hasMore: res.length === pageSize,
+      }));
+    },
+    [],
+  );
+
+  useEffect(() => {
+    if (
+      viewport.current &&
+      viewport.current.scrollHeight - viewport.current.scrollTop ===
+        viewport.current.clientHeight &&
+      mediasFn.loading !== true &&
+      hasMore
+    ) {
+      getMedias(page, q);
+    }
+  }, [viewport.current?.scroll, mediasFn.loading, hasMore, q]);
 
   const renderGrid = (_medias?: MediaDTO[]) => {
     const __medias = _medias ?? Array.from({ length: pageSize });
-    console.log(__medias);
-    return (
+    return __medias.map((media, i) => (
+      <Box key={i} mx="auto">
+        <MediaPoster media={media} />
+      </Box>
+    ));
+  };
+
+  return (
+    <>
+      <NavigationProgress />
       <SimpleGrid
+        ref={viewport}
         cols={4}
         spacing="md"
         verticalSpacing="xl"
@@ -83,30 +123,8 @@ const MediasScroll = ({ q }: Props) => {
           { maxWidth: 'sm', cols: 2, spacing: 'xs' },
           { maxWidth: 'xs', cols: 1, spacing: 'xs' },
         ]}>
-        {__medias.map((media, i) => (
-          <Box key={i} mx="auto">
-            <MediaPoster media={media} />
-          </Box>
-        ))}
-      </SimpleGrid>
-    );
-  };
-
-  return (
-    <>
-      <NavigationProgress />
-      <InfiniteScroll
-        dataLength={medias.length}
-        next={mediasFetch}
-        hasMore={hasMore}
-        loader={renderGrid()}
-        endMessage={
-          <p style={{ textAlign: 'center' }}>
-            <b>Yay! You have seen it all</b>
-          </p>
-        }>
         {renderGrid(medias)}
-      </InfiniteScroll>
+      </SimpleGrid>
     </>
   );
 };

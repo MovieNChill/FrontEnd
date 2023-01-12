@@ -1,3 +1,9 @@
-export const convertQueryParamToMediaFilter = (q: string) => {
-  return `?search=name=${q}`;
+enum operator {
+  ':',
+  '<',
+  '>',
+}
+
+export const mediaFilterHelper = (query: string) => {
+  return `name${operator[0]}${query}`;
 };
