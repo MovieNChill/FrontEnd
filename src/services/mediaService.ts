@@ -4,7 +4,7 @@
  * OpenAPI definition
  * OpenAPI spec version: v0
  */
-import { mediaApi } from '../api/mediaApi';
+import { mediaApi } from '../api/baseApi';
 import type { GetMediaWithFilterParams, MediaDTO } from '../entities/media';
 
 export const getMediaWithFilter = (params?: GetMediaWithFilterParams) => {

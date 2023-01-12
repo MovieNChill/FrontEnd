@@ -4,7 +4,7 @@
  * OpenAPI definition
  * OpenAPI spec version: v0
  */
-import { userApi } from '../api/userApi';
+import { userApi } from '../api/baseApi';
 import type { ErrorResponseUser, Login, User } from '../entities/user';
 
 export const getAllUsers = () => {

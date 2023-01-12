@@ -9,7 +9,7 @@ module.exports = {
       prettier: true,
       override: {
         mutator: {
-          path: 'src/api/mediaApi.ts',
+          path: 'src/api/baseApi.ts',
           name: 'mediaApi',
         },
       },
@@ -24,7 +24,7 @@ module.exports = {
       schemas: 'src/entities/user',
       override: {
         mutator: {
-          path: 'src/api/userApi.ts',
+          path: 'src/api/baseApi.ts',
           name: 'userApi',
         },
       },
