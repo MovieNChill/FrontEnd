@@ -18,8 +18,9 @@ import { InfoCircle } from 'tabler-icons-react';
 import GoogleButton from '../components/GoogleButton';
 import Logo from '../components/Logo';
 import ThemeColoredIcon from '../components/ThemeColoredIcon';
-import { login } from '../constants/routes';
+import { home, login } from '../constants/routes';
 import { CustomResponseUser, User } from '../entities/user';
+import { useUserLocalStorage } from '../hooks/useUserLocalStorage';
 import { register } from '../services/userService';
 
 interface FormValues {
@@ -32,6 +33,7 @@ interface FormValues {
 const Register = () => {
   const [visiblePassword, { toggle }] = useDisclosure(false);
   let apiError: CustomResponseUser | null = null;
+  const { user, setUser } = useUserLocalStorage();
   const navigate = useNavigate();
 
   const form = useForm<FormValues>({
@@ -44,7 +46,7 @@ const Register = () => {
 
     validate: {
       email: (value) => {
-        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]$/;
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]/;
         if (!emailRegex.test(value)) return 'Email is not valid';
         if ((value! as string).length === 0) return 'Email must not be empty';
         if (apiError?.code === 'email_already_exists') return apiError.message;
@@ -69,7 +71,8 @@ const Register = () => {
     apiError = null;
     await register(values as User)
       .then((res: CustomResponseUser) => {
-        // navigate(login.path);
+        setUser(res.object as User);
+        navigate(home.path);
       })
       .catch((err) => {
         err = err.response.data as CustomResponseUser;

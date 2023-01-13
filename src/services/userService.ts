@@ -6,8 +6,8 @@
  */
 import type {
   User,
-  Login,
-  CustomResponseUser
+  CustomResponseUser,
+  LoginDTO
 } from '../entities/user'
 import { userApi } from '../api/baseApi'
 
@@ -33,17 +33,6 @@ export const updateUser = (
       );
     }
   
-export const login = (
-    login: Login,
- ) => {
-      return userApi<User>(
-      {url: `/api/users/login`, method: 'put',
-      headers: {'Content-Type': 'application/json', },
-      data: login
-    },
-      );
-    }
-  
 export const register = (
     user: User,
  ) => {
@@ -51,6 +40,17 @@ export const register = (
       {url: `/api/users/register`, method: 'post',
       headers: {'Content-Type': 'application/json', },
       data: user
+    },
+      );
+    }
+  
+export const login = (
+    loginDTO: LoginDTO,
+ ) => {
+      return userApi<CustomResponseUser>(
+      {url: `/api/users/login`, method: 'post',
+      headers: {'Content-Type': 'application/json', },
+      data: loginDTO
     },
       );
     }
@@ -75,7 +75,7 @@ export const deleteUser = (
   
 export type GetAllUsersResult = NonNullable<Awaited<ReturnType<typeof getAllUsers>>>
 export type UpdateUserResult = NonNullable<Awaited<ReturnType<typeof updateUser>>>
-export type LoginResult = NonNullable<Awaited<ReturnType<typeof login>>>
 export type RegisterResult = NonNullable<Awaited<ReturnType<typeof register>>>
+export type LoginResult = NonNullable<Awaited<ReturnType<typeof login>>>
 export type GetUserByidResult = NonNullable<Awaited<ReturnType<typeof getUserByid>>>
 export type DeleteUserResult = NonNullable<Awaited<ReturnType<typeof deleteUser>>>

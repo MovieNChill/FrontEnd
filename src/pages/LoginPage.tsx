@@ -15,7 +15,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import GoogleButton from '../components/GoogleButton';
 import Logo from '../components/Logo';
 import { home, register } from '../constants/routes';
-import { Login } from '../entities/user';
+import { CustomResponseUser, LoginDTO, User } from '../entities/user';
+import { useUserLocalStorage } from '../hooks/useUserLocalStorage';
 import { login } from '../services/userService';
 
 interface FormValues {
@@ -25,6 +26,8 @@ interface FormValues {
 
 const LoginPage = () => {
   const [visiblePassword, { toggle }] = useDisclosure(false);
+  let apiError: CustomResponseUser | null = null;
+  const { user, setUser } = useUserLocalStorage();
   const navigate = useNavigate();
 
   const form = useForm<FormValues>({
@@ -34,19 +37,30 @@ const LoginPage = () => {
     },
 
     validate: {
-      // login: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid login'),
-      password: (value) => (value.length > 0 ? null : 'Password is required'),
+      login: (value) => {
+        console.log(apiError);
+        if (apiError?.code === 'user_not_found') return apiError.message;
+        if ((value! as string).length === 0) return 'Login must not be empty';
+      },
+      password: (value) => {
+        if (apiError?.code === 'incorrect_password') return apiError.message;
+        if ((value! as string).length === 0)
+          return 'Password must not be empty';
+      },
     },
   });
 
   const handleSubmit = async (values: FormValues) => {
-    await login(values as Login)
-      .then((response) => {
-        console.log('response', response);
+    apiError = null;
+    await login(values as LoginDTO)
+      .then((res: CustomResponseUser) => {
+        setUser(res.object as User);
         navigate(home.path);
       })
-      .catch((error) => {
-        console.log('error', error);
+      .catch((err) => {
+        err = err.response.data as CustomResponseUser;
+        apiError = err;
+        form.validate();
       });
   };
 

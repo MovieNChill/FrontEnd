@@ -5,7 +5,7 @@
  * OpenAPI spec version: v0
  */
 
-export interface Login {
+export interface LoginDTO {
   login?: string;
   password?: string;
 }

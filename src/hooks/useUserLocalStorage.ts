@@ -6,8 +6,8 @@ export const useUserLocalStorage = () => {
     key: 'user',
     defaultValue: undefined,
     getInitialValueInEffect: true,
-    serialize: (value) => JSON.stringify(value),
-    deserialize: (value) => JSON.parse(value),
+    serialize: (value) => (value ? JSON.stringify(value) : ''),
+    deserialize: (value) => (value ? JSON.parse(value) : ''),
   });
 
   return {
