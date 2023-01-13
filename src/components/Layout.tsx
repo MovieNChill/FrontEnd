@@ -5,16 +5,16 @@ import {
   Header,
   MediaQuery,
   Stack,
-  useMantineColorScheme,
 } from '@mantine/core';
 import { useScrollLock } from '@mantine/hooks';
 import { Outlet } from 'react-router-dom';
+import { useColorSchemeLocalStorage } from '../hooks/useColorSchemeLocalStorage';
 import Logo from './Logo';
 import Navbar from './Navbar';
 import Searchbar from './Searchbar';
 
 const Layout = () => {
-  const { colorScheme } = useMantineColorScheme();
+  const { colorScheme } = useColorSchemeLocalStorage();
   const [menuOpened, setMenuOpened] = useScrollLock(false);
 
   return (
