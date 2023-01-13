@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Box,
   Group,
   Text,
@@ -7,6 +6,7 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons';
+import { UserCircle } from 'tabler-icons-react';
 import { User } from '../entities/user';
 
 interface Props {
@@ -47,10 +47,7 @@ const UserAccount = ({ user }: Props) => {
           },
         }}>
         <Group>
-          <Avatar
-            src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=255&q=80"
-            radius="xl"
-          />
+          <UserCircle size={40} strokeWidth={1.5} color={'black'}></UserCircle>
           <Box sx={{ flex: 1 }}>
             <Text size="sm" weight={500}>
               {user.pseudo}

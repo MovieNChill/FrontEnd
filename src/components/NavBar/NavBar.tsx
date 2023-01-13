@@ -18,7 +18,7 @@ import {
   SunMoon,
   UserPlus,
 } from 'tabler-icons-react';
-import { login, register } from '../../constants/routes';
+import { home, login, register } from '../../constants/routes';
 import { useColorSchemeLocalStorage } from '../../hooks/useColorSchemeLocalStorage';
 import { useUserLocalStorage } from '../../hooks/useUserLocalStorage';
 import Logo from '../Logo';
@@ -57,11 +57,6 @@ const Navbar = ({ menuOpened, setMenuOpened }: Props) => {
       <MNavbar.Section grow component={ScrollArea} mx="-xs" mt="md">
         <Menu onClick={() => setMenuOpened(false)} />
       </MNavbar.Section>
-      {user && (
-        <MNavbar.Section mt="md">
-          <UserAccount user={user} />
-        </MNavbar.Section>
-      )}
       <MNavbar.Section mt="md">
         <Group position="center" spacing="xl">
           <Tooltip
@@ -77,10 +72,10 @@ const Navbar = ({ menuOpened, setMenuOpened }: Props) => {
               <ThemeColoredIcon
                 component={
                   colorSchemeWithSystem === 'system'
-                    ? SunMoon
+                    ? Sun
                     : colorSchemeWithSystem === 'light'
                     ? Moon
-                    : Sun
+                    : SunMoon
                 }
               />
             </ActionIcon>
@@ -93,6 +88,11 @@ const Navbar = ({ menuOpened, setMenuOpened }: Props) => {
             onClick={() => toggleColorScheme()}
           /> */}
         </Group>
+        {user && (
+          <MNavbar.Section mt="md">
+            <UserAccount user={user} />
+          </MNavbar.Section>
+        )}
       </MNavbar.Section>
       <MNavbar.Section mt="md">
         {user ? (
@@ -102,7 +102,7 @@ const Navbar = ({ menuOpened, setMenuOpened }: Props) => {
             fullWidth
             onClick={() => setUser(undefined)}
             component={Link}
-            to={login.path}
+            to={home.path}
             leftIcon={<ThemeColoredIcon component={Logout} />}
             styles={(theme) => ({
               root: {
