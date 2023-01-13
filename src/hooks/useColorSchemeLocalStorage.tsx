@@ -7,20 +7,19 @@ export const useColorSchemeLocalStorage = () => {
   const [colorSchemeWithSystem, setColorSchemeWithSystem] =
     useLocalStorage<ColorSchemeWithSystem>({
       key: 'mantine-color-scheme',
-      defaultValue: 'light',
+      defaultValue: 'system',
       getInitialValueInEffect: true,
     });
 
   const preferredColorScheme = useColorScheme();
 
-  const toggleColorScheme = (value?: ColorSchemeWithSystem) =>
+  const toggleColorScheme = (value: ColorSchemeWithSystem) =>
     setColorSchemeWithSystem(
-      value ||
-        (colorSchemeWithSystem === 'dark'
-          ? 'system'
-          : colorSchemeWithSystem === 'system'
-          ? 'light'
-          : 'dark'),
+      colorSchemeWithSystem === 'dark'
+        ? 'system'
+        : colorSchemeWithSystem === 'system'
+        ? 'light'
+        : 'dark',
     );
 
   const colorScheme =
