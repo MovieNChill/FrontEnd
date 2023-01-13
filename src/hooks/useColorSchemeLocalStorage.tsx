@@ -7,7 +7,7 @@ export const useColorSchemeLocalStorage = () => {
   const [colorSchemeWithSystem, setColorSchemeWithSystem] =
     useLocalStorage<ColorSchemeWithSystem>({
       key: 'mantine-color-scheme',
-      defaultValue: 'light',
+      defaultValue: 'system',
       getInitialValueInEffect: true,
     });
 

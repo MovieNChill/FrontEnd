@@ -15,31 +15,39 @@ import { Link, useNavigate } from 'react-router-dom';
 import GoogleButton from '../components/GoogleButton';
 import Logo from '../components/Logo';
 import { home, register } from '../constants/routes';
+import { Login } from '../entities/user';
+import { login } from '../services/userService';
 
 interface FormValues {
-  email: string;
+  login: string;
   password: string;
 }
 
-const Login = () => {
+const LoginPage = () => {
   const [visiblePassword, { toggle }] = useDisclosure(false);
   const navigate = useNavigate();
 
   const form = useForm<FormValues>({
     initialValues: {
-      email: '',
+      login: '',
       password: '',
     },
 
     validate: {
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+      // login: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid login'),
       password: (value) => (value.length > 0 ? null : 'Password is required'),
     },
   });
 
-  const handleSubmit = (values: FormValues) => {
-    console.log(values);
-    navigate(home.path);
+  const handleSubmit = async (values: FormValues) => {
+    await login(values as Login)
+      .then((response) => {
+        console.log('response', response);
+        navigate(home.path);
+      })
+      .catch((error) => {
+        console.log('error', error);
+      });
   };
 
   return (
@@ -58,9 +66,9 @@ const Login = () => {
           <TextInput
             mt="md"
             withAsterisk
-            label="Email"
-            placeholder="your@email.com"
-            {...form.getInputProps('email')}
+            label="Login"
+            placeholder="email or pseudo"
+            {...form.getInputProps('login')}
           />
           <PasswordInput
             mt="md"
@@ -90,4 +98,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginPage;

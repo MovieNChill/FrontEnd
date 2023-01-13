@@ -31,6 +31,7 @@ interface FormValues {
 
 const Register = () => {
   const [visiblePassword, { toggle }] = useDisclosure(false);
+  let apiError: CustomResponseUser | null = null;
   const navigate = useNavigate();
 
   const form = useForm<FormValues>({
@@ -43,36 +44,36 @@ const Register = () => {
 
     validate: {
       email: (value) => {
-        if ((value! as string).length == 0) return 'Email must not be empty';
-        if (/^\S+@\S+$/.test(value) == null) return 'Invalid email';
+        if (/^\S+@\S+$/.test(value) === null) return 'Invalid email';
+        if ((value! as string).length === 0) return 'Email must not be empty';
+        if (apiError?.code === 'email_already_exists') return apiError.message;
       },
       pseudo: (value) => {
-        if ((value! as string).length == 0) return 'Pseudo must not be empty';
+        if (apiError?.code === 'pseudo_already_exists') return apiError.message;
+        if ((value! as string).length === 0) return 'Pseudo must not be empty';
       },
       password: (value) => {
-        if ((value! as string).length == 0) return 'Password must not be empty';
+        if (apiError?.code === 'invalid_password') {
+          //console.log(apiError);
+          return apiError.message;
+        }
+        if ((value! as string).length === 0)
+          return 'Password must not be empty';
       },
     },
     validateInputOnChange: true,
   });
 
   const handleSubmit = async (values: FormValues) => {
+    apiError = null;
     await register(values as User)
       .then((res: CustomResponseUser) => {
         // navigate(login.path);
       })
       .catch((err) => {
-        err = err.response.dat as CustomResponseUser;
-        switch (err?.code) {
-          case 'email_already_exists':
-            form.setFieldError('email', err?.message);
-            break;
-          case 'pseudo_already_exists':
-            form.setFieldError('pseudo', err?.message);
-            break;
-          case 'invalid_password':
-            form.setFieldError('password', err?.message);
-        }
+        err = err.response.data as CustomResponseUser;
+        apiError = err;
+        form.validate();
       });
   };
 
