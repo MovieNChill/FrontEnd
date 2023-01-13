@@ -5,52 +5,72 @@ import {
   Divider,
   Grid,
   Group,
+  Loader,
   Rating,
   Stack,
   Text,
   useMantineTheme,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
+import { useParams } from 'react-router-dom';
+import { useAsync } from 'react-use';
 import { Bookmark } from 'tabler-icons-react';
-import media from '../assets/media1.svg';
+import MediaPoster from '../components/MediaPoster';
 import MediasRow from '../components/MediasRow';
 import ThemeColoredIcon from '../components/ThemeColoredIcon';
+import { medias } from '../constants/routes';
+import { useNavigateWithQuery } from '../hooks/useNavigateWithQuery';
+import { getMediaById } from '../services/mediaService';
 
 const MediaInfos = () => {
+  const { id } = useParams();
+  const { navigate } = useNavigateWithQuery();
+  if (!!!id) {
+    navigate(medias.path);
+    return <></>;
+  }
+
   const theme = useMantineTheme();
   const sm = useMediaQuery(`(max-width: ${theme.breakpoints.sm}px)`);
+
+  const mediaById = useAsync(() => getMediaById(id), [id]);
+
+  if (mediaById.loading || !mediaById.value) {
+    return <Loader />;
+  }
+
   return (
     <>
       <Grid gutter={50}>
         <Col xl="content" span={12} style={{ textAlign: 'center' }}>
-          <img src={media} alt="poster" />
+          <MediaPoster media={mediaById.value} isLink={false} />
         </Col>
         <Col xl="auto">
           <Grid>
             <Col span={12}>
               <Group spacing="sm">
                 <Text weight="bold" size="lg">
-                  Top Gun: Maverick • 2022 • PG-13 • 2h 10m
+                  {`${mediaById.value.name} ${
+                    mediaById.value.releaseDate
+                      ? `• ${new Date(
+                          mediaById.value.releaseDate,
+                        ).getFullYear()}`
+                      : ''
+                  }`}
                 </Text>
                 <Group spacing="xs">
                   <Rating defaultValue={1} size="sm" readOnly count={1} />
-                  <Text weight="bold">8.1</Text>
+                  <Text weight="bold">8.1k</Text>
                   <Text c="dimmed">| 350k</Text>
                 </Group>
 
-                <Badge color="gray" variant="outline">
-                  Action
-                </Badge>
-                <Badge color="gray" variant="outline">
-                  Drama
-                </Badge>
+                {mediaById.value.genre?.map((g) => (
+                  <Badge color="gray" variant="outline">
+                    {g}
+                  </Badge>
+                ))}
               </Group>
-              <Text>
-                After thirty years, Maverick is still pushing the envelope as a
-                top naval aviator, but must confront ghosts of his past when he
-                leads TOP GUN's elite graduates on a mission that demands the
-                ultimate sacrifice from those chosen to fly it.
-              </Text>
+              <Text>{mediaById.value.description}</Text>
             </Col>
             <Col span={12}>
               <Grid>
@@ -58,21 +78,21 @@ const MediaInfos = () => {
                   <Stack spacing="sm">
                     <Group spacing="xs">
                       <Text weight="bold">Director :</Text>
-                      <Text>Joseph Kosinski</Text>
+                      <Text>{mediaById.value.director}</Text>
                     </Group>
 
                     <Divider />
 
                     <Group spacing="xs">
                       <Text weight="bold">Writers :</Text>
-                      <Text>Eric Warren Singer, Peter Craig, Justin Marks</Text>
+                      <Text>{mediaById.value.writers?.join(', ')}</Text>
                     </Group>
 
                     <Divider />
 
                     <Group spacing="xs">
                       <Text weight="bold">Stars :</Text>
-                      <Text>Tom Cruise, Miles Teller, Val Kilmer</Text>
+                      <Text>{mediaById.value.stars?.join(', ')}</Text>
                     </Group>
                   </Stack>
                 </Col>
