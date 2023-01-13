@@ -75,7 +75,7 @@ const Searchbar = () => {
             dragFree
             align="start"
             initialSlide={
-              searchParams.mood ? moods.indexOf(searchParams.mood) + 1 : 0
+              searchParams.mood ? moods.indexOf(searchParams.mood) : 0
             }
             draggable
             loop
