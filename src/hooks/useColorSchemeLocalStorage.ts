@@ -19,12 +19,13 @@ export const useColorSchemeLocalStorage = () => {
       colorSchemeWithSystem === 'system'
         ? preferredColorScheme
         : colorSchemeWithSystem,
-    toggleColorScheme: setColorSchemeWithSystem(
-      colorSchemeWithSystem === 'dark'
-        ? 'system'
-        : colorSchemeWithSystem === 'system'
-        ? 'light'
-        : 'dark',
-    ),
+    toggleColorScheme: () =>
+      setColorSchemeWithSystem(
+        colorSchemeWithSystem === 'dark'
+          ? 'system'
+          : colorSchemeWithSystem === 'system'
+          ? 'light'
+          : 'dark',
+      ),
   };
 };

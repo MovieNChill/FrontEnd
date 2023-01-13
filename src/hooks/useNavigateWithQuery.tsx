@@ -9,7 +9,7 @@ import {
 } from 'react-router-dom';
 
 const searchParamsKeys = ['q', 'mood'] as const;
-type KeyType = typeof searchParamsKeys[number];
+type KeyType = (typeof searchParamsKeys)[number];
 type PartialRecord<K extends keyof any, T> = {
   [P in K]?: T;
 };
