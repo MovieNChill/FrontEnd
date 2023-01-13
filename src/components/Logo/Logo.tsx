@@ -1,12 +1,13 @@
-import { Title, useMantineColorScheme } from '@mantine/core';
+import { Title } from '@mantine/core';
 import { home } from '../../constants/routes';
+import { useColorSchemeLocalStorage } from '../../hooks/useColorSchemeLocalStorage';
 import { useNavigateWithQuery } from '../../hooks/useNavigateWithQuery';
 import styles from './Logo.module.scss';
 import logo from '/logo.svg';
 
 const Logo = () => {
   const { navigate } = useNavigateWithQuery();
-  const { colorScheme } = useMantineColorScheme();
+  const { colorScheme } = useColorSchemeLocalStorage();
 
   return (
     <div onClick={() => navigate(home.path)} className={styles.container}>

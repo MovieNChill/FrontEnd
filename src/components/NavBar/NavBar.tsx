@@ -5,11 +5,13 @@ import {
   MediaQuery,
   Navbar as MNavbar,
   ScrollArea,
-  useMantineColorScheme,
+  Text,
+  Tooltip,
 } from '@mantine/core';
 import { Link } from 'react-router-dom';
-import { Logout, Moon, Sun } from 'tabler-icons-react';
+import { Logout, Moon, Sun, SunMoon } from 'tabler-icons-react';
 import { login } from '../../constants/routes';
+import { useColorSchemeLocalStorage } from '../../hooks/useColorSchemeLocalStorage';
 import Logo from '../Logo';
 import Menu from '../Menu';
 import ThemeColoredIcon from '../ThemeColoredIcon';
@@ -21,7 +23,8 @@ interface Props {
 }
 
 const Navbar = ({ menuOpened, setMenuOpened }: Props) => {
-  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+  const { colorScheme, colorSchemeWithSystem, toggleColorScheme } =
+    useColorSchemeLocalStorage();
 
   return (
     <MNavbar
@@ -48,9 +51,27 @@ const Navbar = ({ menuOpened, setMenuOpened }: Props) => {
       </MNavbar.Section>
       <MNavbar.Section mt="md">
         <Group position="center" spacing="xl">
-          <ActionIcon onClick={() => toggleColorScheme()}>
-            <ThemeColoredIcon component={colorScheme === 'dark' ? Sun : Moon} />
-          </ActionIcon>
+          <Tooltip
+            label={
+              <>
+                <Text align="center">Toggle visual mode</Text>
+                <Text align="center">
+                  Current : {colorSchemeWithSystem} mode
+                </Text>
+              </>
+            }>
+            <ActionIcon onClick={() => toggleColorScheme()}>
+              <ThemeColoredIcon
+                component={
+                  colorSchemeWithSystem === 'system'
+                    ? SunMoon
+                    : colorSchemeWithSystem === 'light'
+                    ? Moon
+                    : Sun
+                }
+              />
+            </ActionIcon>
+          </Tooltip>
           {/* <ActionIcon
             component="img"
             src={flags}

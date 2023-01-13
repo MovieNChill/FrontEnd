@@ -1,21 +1,14 @@
 import { Carousel } from '@mantine/carousel';
-import {
-  Button,
-  Col,
-  Grid,
-  Space,
-  Text,
-  TextInput,
-  useMantineColorScheme,
-} from '@mantine/core';
+import { Button, Col, Grid, Space, Text, TextInput } from '@mantine/core';
 import { useState } from 'react';
 import { Search } from 'tabler-icons-react';
 import { medias } from '../constants/routes';
 import { useMoods } from '../hooks/mediasHooks';
+import { useColorSchemeLocalStorage } from '../hooks/useColorSchemeLocalStorage';
 import { useNavigateWithQuery } from '../hooks/useNavigateWithQuery';
 
 const Searchbar = () => {
-  const { colorScheme } = useMantineColorScheme();
+  const { colorScheme } = useColorSchemeLocalStorage();
   const moods = useMoods();
   const { navigate, clearSearchParam, searchParams } = useNavigateWithQuery();
 
@@ -82,7 +75,7 @@ const Searchbar = () => {
             dragFree
             align="start"
             initialSlide={
-              searchParams.mood ? moods.indexOf(searchParams.mood) + 1 : 0
+              searchParams.mood ? moods.indexOf(searchParams.mood) : 0
             }
             draggable
             loop
