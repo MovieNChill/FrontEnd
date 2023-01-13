@@ -7,8 +7,13 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons';
+import { User } from '../entities/user';
 
-const UserAccount = () => {
+interface Props {
+  user: User;
+}
+
+const UserAccount = ({ user }: Props) => {
   const theme = useMantineTheme();
 
   return (
@@ -48,10 +53,10 @@ const UserAccount = () => {
           />
           <Box sx={{ flex: 1 }}>
             <Text size="sm" weight={500}>
-              Amy Horsefighter
+              {user.pseudo}
             </Text>
             <Text color="dimmed" size="xs">
-              ahorsefighter@gmail.com
+              {user.email}
             </Text>
           </Box>
 
