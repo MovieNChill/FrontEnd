@@ -44,7 +44,8 @@ const Register = () => {
 
     validate: {
       email: (value) => {
-        if (/^\S+@\S+$/.test(value) === null) return 'Invalid email';
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]$/;
+        if (!emailRegex.test(value)) return 'Email is not valid';
         if ((value! as string).length === 0) return 'Email must not be empty';
         if (apiError?.code === 'email_already_exists') return apiError.message;
       },
