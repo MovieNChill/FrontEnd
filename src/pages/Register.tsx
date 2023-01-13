@@ -9,13 +9,15 @@ import {
   PasswordInput,
   Text,
   TextInput,
+  Tooltip,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
-import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { InfoCircle } from 'tabler-icons-react';
 import GoogleButton from '../components/GoogleButton';
 import Logo from '../components/Logo';
+import ThemeColoredIcon from '../components/ThemeColoredIcon';
 import { login } from '../constants/routes';
 import { CustomResponseUser, User } from '../entities/user';
 import { register } from '../services/userService';
@@ -29,7 +31,6 @@ interface FormValues {
 
 const Register = () => {
   const [visiblePassword, { toggle }] = useDisclosure(false);
-  const [apiError, setApiError] = useState<CustomResponseUser>();
   const navigate = useNavigate();
 
   const form = useForm<FormValues>({
@@ -42,30 +43,36 @@ const Register = () => {
 
     validate: {
       email: (value) => {
-        if (apiError?.code == 'email_already_exists') return apiError.message;
         if ((value! as string).length == 0) return 'Email must not be empty';
         if (/^\S+@\S+$/.test(value) == null) return 'Invalid email';
       },
       pseudo: (value) => {
-        if (apiError?.code == 'pseudo_already_exists') return apiError.message;
         if ((value! as string).length == 0) return 'Pseudo must not be empty';
       },
       password: (value) => {
-        if (apiError?.code == 'invalid_password') return apiError.message;
         if ((value! as string).length == 0) return 'Password must not be empty';
       },
     },
+    validateInputOnChange: true,
   });
 
   const handleSubmit = async (values: FormValues) => {
-    setApiError(undefined);
     await register(values as User)
       .then((res: CustomResponseUser) => {
         // navigate(login.path);
       })
       .catch((err) => {
-        setApiError(err.response.data as CustomResponseUser);
-        console.log(apiError);
+        err = err.response.dat as CustomResponseUser;
+        switch (err?.code) {
+          case 'email_already_exists':
+            form.setFieldError('email', err?.message);
+            break;
+          case 'pseudo_already_exists':
+            form.setFieldError('pseudo', err?.message);
+            break;
+          case 'invalid_password':
+            form.setFieldError('password', err?.message);
+        }
       });
   };
 
@@ -98,7 +105,23 @@ const Register = () => {
           <PasswordInput
             mt="md"
             withAsterisk
-            label="Password"
+            label={
+              <span>
+                Password{' '}
+                <Tooltip
+                  multiline
+                  width={200}
+                  label="The password must be at least 8 characters long and must contain at least one digit, one lower case, one upper case, and one special character">
+                  <span>
+                    <ThemeColoredIcon
+                      component={InfoCircle}
+                      size={15}
+                      style={{ marginBottom: '-2px' }}
+                    />
+                  </span>
+                </Tooltip>
+              </span>
+            }
             visible={visiblePassword}
             onVisibilityChange={toggle}
             {...form.getInputProps('password')}
