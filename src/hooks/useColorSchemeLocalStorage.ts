@@ -13,20 +13,19 @@ export const useColorSchemeLocalStorage = () => {
 
   const preferredColorScheme = useColorScheme();
 
-  const toggleColorScheme = (value?: ColorSchemeWithSystem) =>
-    setColorSchemeWithSystem(
-      value ||
-        (colorSchemeWithSystem === 'dark'
+  return {
+    colorSchemeWithSystem,
+    colorScheme:
+      colorSchemeWithSystem === 'system'
+        ? preferredColorScheme
+        : colorSchemeWithSystem,
+    toggleColorScheme: () =>
+      setColorSchemeWithSystem(
+        colorSchemeWithSystem === 'dark'
           ? 'system'
           : colorSchemeWithSystem === 'system'
           ? 'light'
-          : 'dark'),
-    );
-
-  const colorScheme =
-    colorSchemeWithSystem === 'system'
-      ? preferredColorScheme
-      : colorSchemeWithSystem;
-
-  return { colorSchemeWithSystem, colorScheme, toggleColorScheme };
+          : 'dark',
+      ),
+  };
 };

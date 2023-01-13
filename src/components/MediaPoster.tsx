@@ -5,16 +5,17 @@ import { useNavigateWithQuery } from '../hooks/useNavigateWithQuery';
 
 interface Props {
   media?: MediaDTO;
+  isLink?: boolean;
 }
 
-const MediaPoster = ({ media }: Props) => {
+const MediaPoster = ({ media, isLink = true }: Props) => {
   const { navigate } = useNavigateWithQuery();
   return (
     <Skeleton visible={!media} width={200} height={315}>
       {media && (
         <img
-          onClick={() => navigate(mediaInfos.getPath(media.id))}
-          style={{ cursor: 'pointer' }}
+          onClick={() => isLink && navigate(mediaInfos.getPath(media.id))}
+          style={isLink ? { cursor: 'pointer' } : undefined}
           src={
             media.imgUrl ??
             'https://m.media-amazon.com/images/I/812KlOw6iYL._AC_SL1500_.jpg'

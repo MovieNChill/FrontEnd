@@ -5,13 +5,22 @@ import {
   MediaQuery,
   Navbar as MNavbar,
   ScrollArea,
+  Space,
   Text,
   Tooltip,
 } from '@mantine/core';
 import { Link } from 'react-router-dom';
-import { Logout, Moon, Sun, SunMoon } from 'tabler-icons-react';
-import { login } from '../../constants/routes';
+import {
+  Login,
+  Logout,
+  Moon,
+  Sun,
+  SunMoon,
+  UserPlus,
+} from 'tabler-icons-react';
+import { login, register } from '../../constants/routes';
 import { useColorSchemeLocalStorage } from '../../hooks/useColorSchemeLocalStorage';
+import { useUserLocalStorage } from '../../hooks/useUserLocalStorage';
 import Logo from '../Logo';
 import Menu from '../Menu';
 import ThemeColoredIcon from '../ThemeColoredIcon';
@@ -25,6 +34,8 @@ interface Props {
 const Navbar = ({ menuOpened, setMenuOpened }: Props) => {
   const { colorScheme, colorSchemeWithSystem, toggleColorScheme } =
     useColorSchemeLocalStorage();
+
+  const { user, setUser } = useUserLocalStorage();
 
   return (
     <MNavbar
@@ -46,9 +57,11 @@ const Navbar = ({ menuOpened, setMenuOpened }: Props) => {
       <MNavbar.Section grow component={ScrollArea} mx="-xs" mt="md">
         <Menu onClick={() => setMenuOpened(false)} />
       </MNavbar.Section>
-      <MNavbar.Section mt="md">
-        <UserAccount />
-      </MNavbar.Section>
+      {user && (
+        <MNavbar.Section mt="md">
+          <UserAccount user={user} />
+        </MNavbar.Section>
+      )}
       <MNavbar.Section mt="md">
         <Group position="center" spacing="xl">
           <Tooltip
@@ -82,20 +95,55 @@ const Navbar = ({ menuOpened, setMenuOpened }: Props) => {
         </Group>
       </MNavbar.Section>
       <MNavbar.Section mt="md">
-        <Button
-          variant="subtle"
-          color="dark"
-          fullWidth
-          component={Link}
-          to={login.path}
-          leftIcon={<ThemeColoredIcon component={Logout} />}
-          styles={(theme) => ({
-            root: {
-              color: colorScheme === 'light' ? theme.black : theme.white,
-            },
-          })}>
-          Log out
-        </Button>
+        {user ? (
+          <Button
+            variant="subtle"
+            color="dark"
+            fullWidth
+            onClick={() => setUser(undefined)}
+            component={Link}
+            to={login.path}
+            leftIcon={<ThemeColoredIcon component={Logout} />}
+            styles={(theme) => ({
+              root: {
+                color: colorScheme === 'light' ? theme.black : theme.white,
+              },
+            })}>
+            Log out
+          </Button>
+        ) : (
+          <>
+            <Button
+              variant="subtle"
+              color="dark"
+              fullWidth
+              component={Link}
+              to={login.path}
+              leftIcon={<ThemeColoredIcon component={Login} />}
+              styles={(theme) => ({
+                root: {
+                  color: colorScheme === 'light' ? theme.black : theme.white,
+                },
+              })}>
+              Log in
+            </Button>
+            <Space h="md" />
+            <Button
+              variant="subtle"
+              color="dark"
+              fullWidth
+              component={Link}
+              to={register.path}
+              leftIcon={<ThemeColoredIcon component={UserPlus} />}
+              styles={(theme) => ({
+                root: {
+                  color: colorScheme === 'light' ? theme.black : theme.white,
+                },
+              })}>
+              Register
+            </Button>
+          </>
+        )}
       </MNavbar.Section>
     </MNavbar>
   );
