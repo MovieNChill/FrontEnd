@@ -4,16 +4,16 @@
  * OpenAPI definition
  * OpenAPI spec version: v0
  */
-import { mediaApi } from '../api/baseApi';
+import { mediasApi } from '../api/api';
 import type { GetMediaWithFilterParams, MediaDTO } from '../entities/media';
 
 export const getMediaWithFilter = (params?: GetMediaWithFilterParams) => {
-  return mediaApi<MediaDTO[]>({ url: `/api/medias`, method: 'get', params });
+  return mediasApi<MediaDTO[]>({ url: `/`, method: 'get', params });
 };
 
 export const createMedia = (mediaDTO: MediaDTO) => {
-  return mediaApi<boolean>({
-    url: `/api/medias`,
+  return mediasApi<boolean>({
+    url: `/`,
     method: 'post',
     headers: { 'Content-Type': 'application/json' },
     data: mediaDTO,
@@ -21,11 +21,11 @@ export const createMedia = (mediaDTO: MediaDTO) => {
 };
 
 export const getMediaById = (id: string) => {
-  return mediaApi<MediaDTO>({ url: `/api/medias/${id}`, method: 'get' });
+  return mediasApi<MediaDTO>({ url: `/${id}`, method: 'get' });
 };
 
 export const helloWorld = () => {
-  return mediaApi<string>({ url: `/api/medias/helloWorld`, method: 'get' });
+  return mediasApi<string>({ url: `/helloWorld`, method: 'get' });
 };
 
 export type GetMediaWithFilterResult = NonNullable<

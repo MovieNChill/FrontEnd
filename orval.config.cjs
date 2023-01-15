@@ -1,7 +1,7 @@
 module.exports = {
   medias: {
     input:
-      'https://api-movienchill-mediaservice.azuremicroservices.io/v3/api-docs',
+      'https://api-movienchill-gateway.azuremicroservices.io/MEDIAS/v3/api-docs',
     output: {
       target: 'src/services/mediaService.ts',
       mode: 'split',
@@ -9,23 +9,23 @@ module.exports = {
       prettier: true,
       override: {
         mutator: {
-          path: 'src/api/baseApi.ts',
-          name: 'mediaApi',
+          path: 'src/api/api.ts',
+          name: 'mediasApi',
         },
       },
     },
   },
-  user: {
+  users: {
     input:
-      'https://api-movienchill-userservice.azuremicroservices.io/v3/api-docs',
+      'https://api-movienchill-gateway.azuremicroservices.io/USERS/v3/api-docs',
     output: {
       target: 'src/services/userService.ts',
       mode: 'split',
       schemas: 'src/entities/user',
       override: {
         mutator: {
-          path: 'src/api/baseApi.ts',
-          name: 'userApi',
+          path: 'src/api/api.ts',
+          name: 'usersApi',
         },
       },
     },

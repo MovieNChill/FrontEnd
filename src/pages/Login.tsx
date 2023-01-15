@@ -12,23 +12,28 @@ import {
 import { useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAsync } from 'react-use';
 import GoogleButton from '../components/GoogleButton';
 import Logo from '../components/Logo';
 import { home, register } from '../constants/routes';
-import { CustomResponseUser, LoginDTO, User } from '../entities/user';
+import { CustomResponseUser } from '../entities/user';
 import { useUserLocalStorage } from '../hooks/useUserLocalStorage';
-import { login } from '../services/userService';
+import { getUserByid, login } from '../services/userService';
 
 interface FormValues {
   login: string;
   password: string;
 }
 
-const LoginPage = () => {
+const Login = () => {
   const [visiblePassword, { toggle }] = useDisclosure(false);
-  let apiError: CustomResponseUser | null = null;
+  let apiError: CustomResponseUser | undefined = undefined;
   const { user, setUser } = useUserLocalStorage();
   const navigate = useNavigate();
+
+  if (user) {
+    navigate(home.path);
+  }
 
   const form = useForm<FormValues>({
     initialValues: {
@@ -38,7 +43,6 @@ const LoginPage = () => {
 
     validate: {
       login: (value) => {
-        console.log(apiError);
         if (apiError?.code === 'user_not_found') return apiError.message;
         if ((value! as string).length === 0) return 'Login must not be empty';
       },
@@ -48,20 +52,25 @@ const LoginPage = () => {
           return 'Password must not be empty';
       },
     },
+    validateInputOnChange: true,
   });
 
+  const test = useAsync(() => getUserByid(1), []);
+  console.log(test);
+
   const handleSubmit = async (values: FormValues) => {
-    apiError = null;
-    await login(values as LoginDTO)
-      .then((res: CustomResponseUser) => {
-        setUser(res.object as User);
-        navigate(home.path);
-      })
-      .catch((err) => {
-        err = err.response.data as CustomResponseUser;
-        apiError = err;
-        form.validate();
+    apiError = undefined;
+    try {
+      const res = await login({
+        login: values.login,
+        password: values.password,
       });
+      setUser(res.object);
+    } catch (err) {
+      apiError = (err as { response: { data: CustomResponseUser } }).response
+        .data;
+      form.validate();
+    }
   };
 
   return (
@@ -112,4 +121,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default Login;

@@ -7,7 +7,7 @@ import {
 } from '@mantine/nprogress';
 import { useEffect, useState } from 'react';
 import { MediaDTO } from '../entities/media';
-import { mediaFilterHelper } from '../helpers/mediaFilterHelper';
+import { mediaNameFilterHelper } from '../helpers/mediaFilterHelper';
 import { getMediaWithFilter } from '../services/mediaService';
 import media1 from './../assets/media1.svg';
 import media2 from './../assets/media2.svg';
@@ -61,7 +61,7 @@ const MediasScroll = ({ q }: Props) => {
       const res = await getMediaWithFilter({
         page: page,
         size: pageSize,
-        search: query ? mediaFilterHelper(query) : undefined,
+        search: query ? mediaNameFilterHelper(query) : undefined,
       });
 
       if (query !== q) {

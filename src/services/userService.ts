@@ -9,15 +9,15 @@ import type {
   CustomResponseUser,
   LoginDTO
 } from '../entities/user'
-import { userApi } from '../api/baseApi'
+import { usersApi } from '../api/api'
 
 
 
   export const getAllUsers = (
     
  ) => {
-      return userApi<User[]>(
-      {url: `/api/users`, method: 'get'
+      return usersApi<User[]>(
+      {url: `/`, method: 'get'
     },
       );
     }
@@ -25,8 +25,8 @@ import { userApi } from '../api/baseApi'
 export const updateUser = (
     user: User,
  ) => {
-      return userApi<User>(
-      {url: `/api/users`, method: 'put',
+      return usersApi<User>(
+      {url: `/`, method: 'put',
       headers: {'Content-Type': 'application/json', },
       data: user
     },
@@ -36,8 +36,8 @@ export const updateUser = (
 export const register = (
     user: User,
  ) => {
-      return userApi<CustomResponseUser>(
-      {url: `/api/users/register`, method: 'post',
+      return usersApi<CustomResponseUser>(
+      {url: `/register`, method: 'post',
       headers: {'Content-Type': 'application/json', },
       data: user
     },
@@ -47,8 +47,8 @@ export const register = (
 export const login = (
     loginDTO: LoginDTO,
  ) => {
-      return userApi<CustomResponseUser>(
-      {url: `/api/users/login`, method: 'post',
+      return usersApi<CustomResponseUser>(
+      {url: `/login`, method: 'post',
       headers: {'Content-Type': 'application/json', },
       data: loginDTO
     },
@@ -58,8 +58,8 @@ export const login = (
 export const getUserByid = (
     id: number,
  ) => {
-      return userApi<User>(
-      {url: `/api/users/${id}`, method: 'get'
+      return usersApi<User>(
+      {url: `/${id}`, method: 'get'
     },
       );
     }
@@ -67,8 +67,8 @@ export const getUserByid = (
 export const deleteUser = (
     id: number,
  ) => {
-      return userApi<boolean>(
-      {url: `/api/users/${id}`, method: 'delete'
+      return usersApi<boolean>(
+      {url: `/${id}`, method: 'delete'
     },
       );
     }

@@ -19,7 +19,7 @@ import GoogleButton from '../components/GoogleButton';
 import Logo from '../components/Logo';
 import ThemeColoredIcon from '../components/ThemeColoredIcon';
 import { home, login } from '../constants/routes';
-import { CustomResponseUser, User } from '../entities/user';
+import { CustomResponseUser } from '../entities/user';
 import { useUserLocalStorage } from '../hooks/useUserLocalStorage';
 import { register } from '../services/userService';
 
@@ -32,9 +32,15 @@ interface FormValues {
 
 const Register = () => {
   const [visiblePassword, { toggle }] = useDisclosure(false);
-  let apiError: CustomResponseUser | null = null;
+  let apiError: CustomResponseUser | undefined = undefined;
   const { user, setUser } = useUserLocalStorage();
   const navigate = useNavigate();
+
+  console.log(apiError);
+
+  if (user) {
+    navigate(home.path);
+  }
 
   const form = useForm<FormValues>({
     initialValues: {
@@ -46,8 +52,8 @@ const Register = () => {
 
     validate: {
       email: (value) => {
-        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]/;
-        if (!emailRegex.test(value)) return 'Email is not valid';
+        if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]/.test(value))
+          return 'Email is not valid';
         if ((value! as string).length === 0) return 'Email must not be empty';
         if (apiError?.code === 'email_already_exists') return apiError.message;
       },
@@ -57,7 +63,6 @@ const Register = () => {
       },
       password: (value) => {
         if (apiError?.code === 'invalid_password') {
-          //console.log(apiError);
           return apiError.message;
         }
         if ((value! as string).length === 0)
@@ -68,17 +73,19 @@ const Register = () => {
   });
 
   const handleSubmit = async (values: FormValues) => {
-    apiError = null;
-    await register(values as User)
-      .then((res: CustomResponseUser) => {
-        setUser(res.object as User);
-        navigate(home.path);
-      })
-      .catch((err) => {
-        err = err.response.data as CustomResponseUser;
-        apiError = err;
-        form.validate();
+    apiError = undefined;
+    try {
+      const res = await register({
+        pseudo: values.pseudo,
+        email: values.email,
+        password: values.password,
       });
+      setUser(res.object);
+    } catch (err) {
+      apiError = (err as { response: { data: CustomResponseUser } }).response
+        .data;
+      form.validate();
+    }
   };
 
   return (

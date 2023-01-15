@@ -3,7 +3,9 @@ import {
   createSearchParams,
   Link,
   LinkProps,
+  Navigate,
   NavigateOptions,
+  NavigateProps,
   useNavigate,
   useSearchParams,
 } from 'react-router-dom';
@@ -46,6 +48,12 @@ export const useNavigateWithQuery = () => {
     },
     Link: ({ to, ...props }: LinkProps) => (
       <Link
+        to={`${to}${parameters ? `?${createSearchParams(parameters)}` : ''}`}
+        {...props}
+      />
+    ),
+    Navigate: ({ to, ...props }: NavigateProps) => (
+      <Navigate
         to={`${to}${parameters ? `?${createSearchParams(parameters)}` : ''}`}
         {...props}
       />

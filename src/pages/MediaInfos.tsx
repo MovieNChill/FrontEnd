@@ -19,16 +19,25 @@ import MediaPoster from '../components/MediaPoster';
 import MediasRow from '../components/MediasRow';
 import ThemeColoredIcon from '../components/ThemeColoredIcon';
 import { medias } from '../constants/routes';
+import { MediaDTO } from '../entities/media';
 import { useNavigateWithQuery } from '../hooks/useNavigateWithQuery';
 import { getMediaById } from '../services/mediaService';
+import media1 from './../assets/media1.svg';
+import media2 from './../assets/media2.svg';
+import media3 from './../assets/media3.svg';
+import media4 from './../assets/media4.svg';
+
+const mediasKek: MediaDTO[] = [
+  { id: 0, imgUrl: media1, name: 'bengz' },
+  { id: 1, imgUrl: media2, name: 'bengz' },
+  { id: 2, imgUrl: media3, name: 'bengz' },
+  { id: 3, imgUrl: media4, name: 'bengz' },
+];
 
 const MediaInfos = () => {
   const { id } = useParams();
-  const { navigate } = useNavigateWithQuery();
-  if (!!!id) {
-    navigate(medias.path);
-    return <></>;
-  }
+  const { Navigate } = useNavigateWithQuery();
+  if (!!!id) return <Navigate to={medias.path} />;
 
   const theme = useMantineTheme();
   const sm = useMediaQuery(`(max-width: ${theme.breakpoints.sm}px)`);
@@ -116,7 +125,7 @@ const MediaInfos = () => {
           <Group spacing="sm" position="apart"></Group>
         </Stack>
       </Group>
-      <MediasRow title="Similar Movies" />
+      <MediasRow medias={mediasKek} title="Similar Movies" />
     </>
   );
 };

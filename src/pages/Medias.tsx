@@ -1,10 +1,9 @@
 import { Group, Select, Text } from '@mantine/core';
 import { forwardRef, useState } from 'react';
 import * as Icons from 'tabler-icons-react';
-import MediasRow from '../components/MediasRow';
+import { MediasRows } from '../components/MediasRows';
 import MediasScroll from '../components/MediasScroll';
 import ThemeColoredIcon from '../components/ThemeColoredIcon';
-import { getCurrentMonth } from '../helpers/dateHelper';
 import { Platform, useCategories, usePlatforms } from '../hooks/mediasHooks';
 import { useNavigateWithQuery } from '../hooks/useNavigateWithQuery';
 
@@ -81,11 +80,7 @@ const Medias = () => {
       {searchParams.q || searchParams.mood ? (
         <MediasScroll q={searchParams.q} mood={searchParams.mood} />
       ) : (
-        <>
-          <MediasRow title="Upcoming" />
-          <MediasRow title="Recommended" />
-          <MediasRow title={`Popular movies on ${getCurrentMonth()}`} />
-        </>
+        <MediasRows />
       )}
     </>
   );
