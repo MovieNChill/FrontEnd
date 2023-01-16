@@ -6,8 +6,10 @@ import {
   startNavigationProgress,
 } from '@mantine/nprogress';
 import { useEffect, useState } from 'react';
+import { useAsync, useAsyncFn } from 'react-use';
 import { MediaDTO } from '../entities/media';
 import { mediaNameFilterHelper } from '../helpers/mediaFilterHelper';
+import { useNavigateWithQuery } from '../hooks/useNavigateWithQuery';
 import { getMediaWithFilter } from '../services/mediaService';
 import MediaPoster from './MediaPoster';
 
@@ -16,48 +18,63 @@ interface Props {
   mood?: string;
 }
 
-const pageSize = 12;
+const pageSize = 2;
 
-const MediasScroll = ({ q }: Props) => {
-  const [medias, setMedias] = useState<MediaDTO[]>([]);
-  const [page, setPage] = useState(0);
-  const [hasMore, setHasMore] = useState(true);
+interface State {
+  medias: MediaDTO[];
+  page: number;
+}
+
+const MediasScroll = () => {
+  const [state, setState] = useState<State>({
+    medias: [],
+    page: 0,
+  });
+  const [touched, setTouched] = useState<boolean>(false);
   const [observer, setObserver] = useState<IntersectionObserver>();
   const [ref, setRef] = useState<HTMLDivElement | null>(null);
-  const [query, setQuery] = useState(q);
+  const { searchParams } = useNavigateWithQuery();
 
-  useEffect(() => {
-    const fetchData = async () => {
+  useAsync(
+    () => getMedias({ page: 0, medias: [] }, searchParams.q),
+    [searchParams.q],
+  );
+
+  const [, getMedias] = useAsyncFn(
+    async (_state: State, query?: string) => {
       resetNavigationProgress();
       startNavigationProgress();
 
       const res = await getMediaWithFilter({
-        page: page,
+        page: _state.page,
         size: pageSize,
         search: query ? mediaNameFilterHelper(query) : undefined,
       });
 
-      if (query !== q) {
-        setMedias(res);
-        setPage(0);
-        setHasMore(true);
-        setQuery(q);
-      } else {
-        setMedias((prevData) => prevData.concat(res));
-        setHasMore(res.length === pageSize);
-      }
-
+      const total = [..._state.medias, ...res];
+      setState({
+        medias: total,
+        page: _state.page + 1,
+      });
       completeNavigationProgress();
-    };
-    fetchData();
-  }, [page, q, query]);
+      return total;
+    },
+    [setState, searchParams.q],
+  );
+
+  useEffect(() => {
+    if (touched && state.page * pageSize === state.medias.length) {
+      setTouched(false);
+      getMedias(state, searchParams.q);
+    }
+  }, [state, getMedias, touched]);
 
   useEffect(() => {
     if (!observer && ref) {
       const newObserver = new IntersectionObserver(
         (entries) => {
-          if (entries[0].intersectionRatio > 0.8 && hasMore) {
-            setPage((prevPage) => prevPage + 1);
+          if (entries[0].intersectionRatio > 0.8) {
+            setTouched(true);
           }
         },
         { threshold: [0.8] },
@@ -66,7 +83,7 @@ const MediasScroll = ({ q }: Props) => {
       setObserver(newObserver);
     }
     return () => observer && observer.disconnect();
-  }, [observer, ref, setPage, hasMore]);
+  }, [observer, ref]);
 
   const renderGrid = (_medias?: MediaDTO[]) => {
     const __medias = _medias ?? Array.from({ length: pageSize });
@@ -89,7 +106,7 @@ const MediasScroll = ({ q }: Props) => {
           { maxWidth: 'sm', cols: 2, spacing: 'xs' },
           { maxWidth: 'xs', cols: 1, spacing: 'xs' },
         ]}>
-        {renderGrid(medias)}
+        {renderGrid(state.medias)}
       </SimpleGrid>
       <div ref={setRef} />
     </>
