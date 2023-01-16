@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy Node.js app to Azure Web App - movieNChill
+name: Build and deploy Node.js app to Azure Web App - movienchill-app
 
 on:
   push:
@@ -27,7 +27,6 @@ jobs:
           npm run build --if-present
           npm run test --if-present
 
-
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
@@ -51,7 +50,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'movieNChill'
+          app-name: 'movienchill-app'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_AC04FD1CACB442F69834EE8C404501C8 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_2C6F016811A54414AA3D6D5EC0A9D6C9 }}
           package: .

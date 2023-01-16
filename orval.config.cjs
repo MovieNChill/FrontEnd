@@ -1,7 +1,7 @@
 module.exports = {
   medias: {
     input:
-      'https://api-movienchill-gateway.azuremicroservices.io/MEDIAS/v3/api-docs',
+      'https://movienchill-api-gateway.azuremicroservices.io/MEDIAS/v3/api-docs',
     output: {
       target: 'src/services/mediaService.ts',
       mode: 'split',
@@ -17,7 +17,7 @@ module.exports = {
   },
   users: {
     input:
-      'https://api-movienchill-gateway.azuremicroservices.io/USERS/v3/api-docs',
+      'https://movienchill-api-gateway.azuremicroservices.io/USERS/v3/api-docs',
     output: {
       target: 'src/services/userService.ts',
       mode: 'split',
