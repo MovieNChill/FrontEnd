@@ -1,6 +1,7 @@
-import { lazy } from 'react';
+import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Layout from './components/Layout';
+import Loader from './components/Loader';
 import routes from './constants/routes';
 
 const Login = lazy(() => import('./pages/Login'));
@@ -22,8 +23,22 @@ const App = () => {
         <Route path={routes.library.path} element={<div>Library</div>} />
         <Route path={routes.forum.path} element={<div>Forum</div>} />
       </Route>
-      <Route path={routes.login.path} element={<Login />} />
-      <Route path={routes.register.path} element={<Register />} />
+      <Route
+        path={routes.login.path}
+        element={
+          <Suspense fallback={<Loader />}>
+            <Login />
+          </Suspense>
+        }
+      />
+      <Route
+        path={routes.register.path}
+        element={
+          <Suspense fallback={<Loader />}>
+            <Register />
+          </Suspense>
+        }
+      />
       <Route element={<Layout />}>
         <Route path={routes.notFound.path} element={<NotFound />} />
       </Route>
