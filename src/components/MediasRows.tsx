@@ -1,6 +1,5 @@
 import { Loader } from '@mantine/core';
 import { useAsync } from 'react-use';
-import { getCurrentMonth } from '../helpers/dateHelper';
 import { mediaUpcomingFilterHelper } from '../helpers/mediaFilterHelper';
 import { getMediaWithFilter } from '../services/mediaService';
 import MediasRow from './MediasRow';
@@ -20,10 +19,10 @@ const MediasRows = () => {
     <>
       <MediasRow title="Upcoming" medias={medias.value} />
       <MediasRow title="Recommended" medias={medias.value} />
-      <MediasRow
+      {/* <MediasRow
         title={`Popular movies on ${getCurrentMonth()}`}
         medias={medias.value}
-      />
+      /> */}
     </>
   );
 };
