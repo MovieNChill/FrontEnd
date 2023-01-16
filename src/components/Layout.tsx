@@ -10,7 +10,7 @@ import { useScrollLock } from '@mantine/hooks';
 import { Outlet } from 'react-router-dom';
 import { useColorSchemeLocalStorage } from '../hooks/useColorSchemeLocalStorage';
 import Logo from './Logo';
-import Navbar from './Navbar';
+import Navigationbar from './Navigationbar';
 import Searchbar from './Searchbar';
 
 const Layout = () => {
@@ -24,7 +24,9 @@ const Layout = () => {
       }}
       padding="xl"
       navbarOffsetBreakpoint="sm"
-      navbar={<Navbar menuOpened={menuOpened} setMenuOpened={setMenuOpened} />}
+      navbar={
+        <Navigationbar menuOpened={menuOpened} setMenuOpened={setMenuOpened} />
+      }
       header={
         <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
           <Header height={{ base: 70, sm: 0, md: 0, lg: 0, xl: 0 }} p="xs">

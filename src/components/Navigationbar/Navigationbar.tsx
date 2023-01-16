@@ -31,7 +31,7 @@ interface Props {
   setMenuOpened: (value: boolean) => void;
 }
 
-const Navbar = ({ menuOpened, setMenuOpened }: Props) => {
+const Navigationbar = ({ menuOpened, setMenuOpened }: Props) => {
   const { colorScheme, colorSchemeWithSystem, toggleColorScheme } =
     useColorSchemeLocalStorage();
 
@@ -42,7 +42,6 @@ const Navbar = ({ menuOpened, setMenuOpened }: Props) => {
       p="md"
       hiddenBreakpoint="sm"
       hidden={!menuOpened}
-      styles={() => ({})}
       width={{
         sm: 250,
         md: 250,
@@ -149,4 +148,4 @@ const Navbar = ({ menuOpened, setMenuOpened }: Props) => {
   );
 };
 
-export default Navbar;
+export default Navigationbar;
