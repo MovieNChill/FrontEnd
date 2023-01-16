@@ -16,7 +16,6 @@ import { useParams } from 'react-router-dom';
 import { useAsync } from 'react-use';
 import { Bookmark } from 'tabler-icons-react';
 import MediaPoster from '../components/MediaPoster';
-import MediasRow from '../components/MediasRow';
 import ThemeColoredIcon from '../components/ThemeColoredIcon';
 import { medias } from '../constants/routes';
 import { MediaDTO } from '../entities/media';
@@ -125,7 +124,7 @@ const MediaInfos = () => {
           <Group spacing="sm" position="apart"></Group>
         </Stack>
       </Group>
-      <MediasRow medias={mediasKek} title="Similar Movies" />
+      {/* TODO backend : <MediasRow medias={mediasKek} title="Similar Movies" /> */}
     </>
   );
 };
