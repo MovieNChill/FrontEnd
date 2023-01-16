@@ -5,7 +5,7 @@ import { mediaUpcomingFilterHelper } from '../helpers/mediaFilterHelper';
 import { getMediaWithFilter } from '../services/mediaService';
 import MediasRow from './MediasRow';
 
-export const MediasRows = () => {
+const MediasRows = () => {
   const medias = useAsync(() =>
     getMediaWithFilter({
       search: mediaUpcomingFilterHelper(),
@@ -27,3 +27,5 @@ export const MediasRows = () => {
     </>
   );
 };
+
+export default MediasRows;

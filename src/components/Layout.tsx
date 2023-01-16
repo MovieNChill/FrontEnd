@@ -3,10 +3,12 @@ import {
   Burger,
   Group,
   Header,
+  Loader,
   MediaQuery,
   Stack,
 } from '@mantine/core';
 import { useScrollLock } from '@mantine/hooks';
+import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import { useColorSchemeLocalStorage } from '../hooks/useColorSchemeLocalStorage';
 import Logo from './Logo';
@@ -49,7 +51,9 @@ const Layout = () => {
       }>
       <Stack spacing="xl">
         <Searchbar />
-        <Outlet />
+        <Suspense fallback={<Loader />}>
+          <Outlet />
+        </Suspense>
       </Stack>
     </AppShell>
   );
