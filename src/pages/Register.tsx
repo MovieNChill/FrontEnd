@@ -50,9 +50,9 @@ const Register = () => {
 
     validate: {
       email: (value) => {
+        if ((value! as string).length === 0) return 'Email must not be empty';
         if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]/.test(value))
           return 'Email is not valid';
-        if ((value! as string).length === 0) return 'Email must not be empty';
         if (apiError?.code === 'email_already_exists') return apiError.message;
       },
       pseudo: (value) => {
@@ -60,6 +60,7 @@ const Register = () => {
         if ((value! as string).length === 0) return 'Pseudo must not be empty';
       },
       password: (value) => {
+        console.log('validate:', apiError);
         if (apiError?.code === 'invalid_password') {
           return apiError.message;
         }
@@ -84,7 +85,6 @@ const Register = () => {
       apiError = (err as { response: { data: CustomResponseUser } }).response
         .data;
       form.validate();
-      console.log(apiError);
     }
   };
 
