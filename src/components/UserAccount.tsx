@@ -8,6 +8,7 @@ import {
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons';
 import { UserCircle } from 'tabler-icons-react';
 import { User } from '../entities/user';
+import ThemeColoredIcon from './ThemeColoredIcon';
 
 interface Props {
   user: User;
@@ -47,7 +48,12 @@ const UserAccount = ({ user }: Props) => {
           },
         }}>
         <Group>
-          <UserCircle size={40} strokeWidth={1.5} color={'black'}></UserCircle>
+          <ThemeColoredIcon
+            component={UserCircle}
+            size={40}
+            strokeWidth={1.5}
+            color={'black'}
+          />
           <Box sx={{ flex: 1 }}>
             <Text size="sm" weight={500}>
               {user.pseudo}
