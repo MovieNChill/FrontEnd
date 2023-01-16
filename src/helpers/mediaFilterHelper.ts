@@ -10,5 +10,5 @@ export const mediaNameFilterHelper = (query: string) => {
 
 export const mediaUpcomingFilterHelper = () => {
   const today = new Date().toISOString().slice(0, 10);
-  return `date${operator[2]}${today}`;
+  return `releaseDate${operator[2]}${today}`;
 };

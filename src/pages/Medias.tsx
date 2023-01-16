@@ -1,7 +1,6 @@
 import { Group, Select, Text } from '@mantine/core';
 import { forwardRef, useState } from 'react';
 import * as Icons from 'tabler-icons-react';
-import MediasRows from '../components/MediasRows';
 import MediasScroll from '../components/MediasScroll';
 import ThemeColoredIcon from '../components/ThemeColoredIcon';
 import { Platform, useCategories, usePlatforms } from '../hooks/mediasHooks';
@@ -77,11 +76,12 @@ const Medias = () => {
           data={platforms}
         />
       </Group>
-      {searchParams.q || searchParams.mood ? (
+      <MediasScroll q={searchParams.q} mood={searchParams.mood} />
+      {/* {searchParams.q || searchParams.mood ? (
         <MediasScroll q={searchParams.q} mood={searchParams.mood} />
       ) : (
         <MediasRows />
-      )}
+      )} */}
     </>
   );
 };
