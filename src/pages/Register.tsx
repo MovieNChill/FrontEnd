@@ -36,8 +36,6 @@ const Register = () => {
   const { user, setUser } = useUserLocalStorage();
   const navigate = useNavigate();
 
-  console.log(apiError);
-
   if (user) {
     navigate(home.path);
   }

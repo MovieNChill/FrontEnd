@@ -12,13 +12,12 @@ import {
 import { useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAsync } from 'react-use';
 import GoogleButton from '../components/GoogleButton';
 import Logo from '../components/Logo';
 import { home, register } from '../constants/routes';
 import { CustomResponseUser } from '../entities/user';
 import { useUserLocalStorage } from '../hooks/useUserLocalStorage';
-import { getUserByid, login } from '../services/userService';
+import { login } from '../services/userService';
 
 interface FormValues {
   login: string;
@@ -54,9 +53,6 @@ const Login = () => {
     },
     validateInputOnChange: true,
   });
-
-  const test = useAsync(() => getUserByid(1), []);
-  console.log(test);
 
   const handleSubmit = async (values: FormValues) => {
     apiError = undefined;
