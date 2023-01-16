@@ -81,10 +81,12 @@ const Register = () => {
         password: values.password,
       });
       setUser(res.object);
+      console.log(res);
     } catch (err) {
       apiError = (err as { response: { data: CustomResponseUser } }).response
         .data;
       form.validate();
+      console.log(apiError);
     }
   };
 
