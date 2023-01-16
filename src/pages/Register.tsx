@@ -13,6 +13,7 @@ import {
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { InfoCircle } from 'tabler-icons-react';
 import GoogleButton from '../components/GoogleButton';
@@ -32,7 +33,7 @@ interface FormValues {
 
 const Register = () => {
   const [visiblePassword, { toggle }] = useDisclosure(false);
-  let apiError: CustomResponseUser | undefined = undefined;
+  const [apiError, setApiError] = useState<CustomResponseUser>();
   const { user, setUser } = useUserLocalStorage();
   const navigate = useNavigate();
 
@@ -53,28 +54,28 @@ const Register = () => {
         if ((value! as string).length === 0) return 'Email must not be empty';
         if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]/.test(value))
           return 'Email is not valid';
-        if (apiError?.code === 'email_already_exists') return apiError.message;
+        //if (apiError?.code === 'email_already_exists') return apiError.message;
       },
       pseudo: (value) => {
-        if (apiError?.code === 'pseudo_already_exists') return apiError.message;
+        //if (apiError?.code === 'pseudo_already_exists') return apiError.message;
         if ((value! as string).length === 0) return 'Pseudo must not be empty';
       },
       password: (value) => {
-        console.log(
-          'validate ',
-          apiError?.code,
-          ' ?',
-          apiError?.code == 'invalid_password',
-          ' -> ',
-          apiError?.message,
-        );
-        if (true) {
-          console.log('test');
-        }
-        if (apiError?.code == 'invalid_password') {
-          console.log(apiError.message);
-          return apiError.message;
-        }
+        // console.log(
+        //   'validate ',
+        //   apiError?.code,
+        //   ' ?',
+        //   apiError?.code == 'invalid_password',
+        //   ' -> ',
+        //   apiError?.message,
+        // );
+        // if (true) {
+        //   console.log('test');
+        // }
+        // if (apiError?.code == 'invalid_password') {
+        //   console.log(apiError.message);
+        //   return apiError.message;
+        // }
         if ((value! as string).length === 0)
           return 'Password must not be empty';
       },
@@ -82,7 +83,8 @@ const Register = () => {
   });
 
   const handleSubmit = async (values: FormValues) => {
-    apiError = undefined;
+    //setApiError(undefined);
+    form.clearErrors();
     try {
       const res = await register({
         pseudo: values.pseudo,
@@ -92,11 +94,22 @@ const Register = () => {
       setUser(res.object);
       console.log(res);
     } catch (err) {
-      apiError = (err as { response: { data: CustomResponseUser } }).response
+      const e = (err as { response: { data: CustomResponseUser } }).response
         .data;
+      form.setErrors({
+        email: e?.code === 'email_already_exists' ? e.message : undefined,
+        pseudo: e?.code === 'pseudo_already_exists' ? e.message : undefined,
+        password: e?.code === 'invalid_password' ? e.message : undefined,
+      });
+
+      // setApiError(
+      //   (err as { response: { data: CustomResponseUser } }).response.data,
+      // );
+      // apiError = (err as { response: { data: CustomResponseUser } }).response
+      //   .data;
       // form.validate();
     }
-    console.log(form.validate());
+    console.log(form.isValid());
   };
 
   return (
