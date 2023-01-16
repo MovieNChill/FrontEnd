@@ -60,15 +60,25 @@ const Register = () => {
         if ((value! as string).length === 0) return 'Pseudo must not be empty';
       },
       password: (value) => {
-        console.log('validate:', apiError);
-        if (apiError?.code === 'invalid_password') {
+        console.log(
+          'validate ',
+          apiError?.code,
+          ' ?',
+          apiError?.code == 'invalid_password',
+          ' -> ',
+          apiError?.message,
+        );
+        if (true) {
+          console.log('test');
+        }
+        if (apiError?.code == 'invalid_password') {
+          console.log(apiError.message);
           return apiError.message;
         }
         if ((value! as string).length === 0)
           return 'Password must not be empty';
       },
     },
-    validateInputOnChange: true,
   });
 
   const handleSubmit = async (values: FormValues) => {
@@ -84,8 +94,9 @@ const Register = () => {
     } catch (err) {
       apiError = (err as { response: { data: CustomResponseUser } }).response
         .data;
-      form.validate();
+      // form.validate();
     }
+    console.log(form.validate());
   };
 
   return (

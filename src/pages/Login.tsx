@@ -65,7 +65,7 @@ const Login = () => {
     } catch (err) {
       apiError = (err as { response: { data: CustomResponseUser } }).response
         .data;
-      form.validate();
+      console.log('test', form.validate());
     }
   };
 
