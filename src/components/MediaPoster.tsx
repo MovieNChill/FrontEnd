@@ -15,7 +15,11 @@ const MediaPoster = ({ media, isLink = true }: Props) => {
       {media && (
         <img
           onClick={() => isLink && navigate(mediaInfos.getPath(media.id))}
-          style={isLink ? { cursor: 'pointer' } : undefined}
+          style={
+            isLink
+              ? { cursor: 'pointer', objectFit: 'cover' }
+              : { objectFit: 'cover' }
+          }
           src={
             media.imgUrl ??
             'https://m.media-amazon.com/images/I/812KlOw6iYL._AC_SL1500_.jpg'

@@ -2,7 +2,7 @@ import Axios, { AxiosRequestConfig } from 'axios';
 
 const getInstance = (endPoint: string) => {
   return Axios.create({
-    baseURL: `https://api-movienchill-gateway.azuremicroservices.io/${endPoint}`,
+    baseURL: `https://movienchill-api-gateway.azuremicroservices.io/${endPoint}`,
   });
 };
 
