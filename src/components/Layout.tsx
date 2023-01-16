@@ -13,7 +13,7 @@ import { Outlet } from 'react-router-dom';
 import { useColorSchemeLocalStorage } from '../hooks/useColorSchemeLocalStorage';
 import Logo from './Logo';
 import Navigationbar from './Navigationbar';
-import Searchbar from './Searchbar';
+import Search from './Search';
 
 const Layout = () => {
   const { colorScheme } = useColorSchemeLocalStorage();
@@ -50,7 +50,7 @@ const Layout = () => {
         </MediaQuery>
       }>
       <Stack spacing="xl">
-        <Searchbar />
+        <Search />
         <Suspense fallback={<Loader />}>
           <Outlet />
         </Suspense>

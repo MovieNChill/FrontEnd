@@ -1,13 +1,13 @@
 import { Carousel } from '@mantine/carousel';
 import { Button, Col, Grid, Space, Text, TextInput } from '@mantine/core';
 import { useState } from 'react';
-import { Search } from 'tabler-icons-react';
+import { Search as S } from 'tabler-icons-react';
 import { medias } from '../constants/routes';
 import { useMoods } from '../hooks/mediasHooks';
 import { useColorSchemeLocalStorage } from '../hooks/useColorSchemeLocalStorage';
 import { useNavigateWithQuery } from '../hooks/useNavigateWithQuery';
 
-const Searchbar = () => {
+const Search = () => {
   const { colorScheme } = useColorSchemeLocalStorage();
   const moods = useMoods();
   const { navigate, clearSearchParam, searchParams } = useNavigateWithQuery();
@@ -57,7 +57,7 @@ const Searchbar = () => {
             })}
             radius="xl"
             onClick={handleSearch}>
-            <Search />
+            <S />
           </Button>
         }
         placeholder="Search for movies, TV shows, keywords..."
@@ -139,4 +139,4 @@ const Searchbar = () => {
   );
 };
 
-export default Searchbar;
+export default Search;
