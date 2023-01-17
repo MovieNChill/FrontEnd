@@ -5,7 +5,11 @@
  * OpenAPI spec version: v0
  */
 import { mediasApi } from '../api/api';
-import type { GetMediaWithFilterParams, MediaDTO } from '../entities/media';
+import type {
+  GetMediaWithFilterParams,
+  MediaDTO,
+  PlatformDTO,
+} from '../entities/media';
 
 export const getMediaWithFilter = (params?: GetMediaWithFilterParams) => {
   return mediasApi<MediaDTO[]>({ url: `/`, method: 'get', params });
@@ -24,6 +28,14 @@ export const getMediaById = (id: string) => {
   return mediasApi<MediaDTO>({ url: `/${id}`, method: 'get' });
 };
 
+export const deleteMediaById = (id: string) => {
+  return mediasApi<boolean>({ url: `/${id}`, method: 'delete' });
+};
+
+export const getMediaPlatform = (id: string) => {
+  return mediasApi<PlatformDTO[]>({ url: `/${id}/platform`, method: 'get' });
+};
+
 export const helloWorld = () => {
   return mediasApi<string>({ url: `/helloWorld`, method: 'get' });
 };
@@ -36,6 +48,12 @@ export type CreateMediaResult = NonNullable<
 >;
 export type GetMediaByIdResult = NonNullable<
   Awaited<ReturnType<typeof getMediaById>>
+>;
+export type DeleteMediaByIdResult = NonNullable<
+  Awaited<ReturnType<typeof deleteMediaById>>
+>;
+export type GetMediaPlatformResult = NonNullable<
+  Awaited<ReturnType<typeof getMediaPlatform>>
 >;
 export type HelloWorldResult = NonNullable<
   Awaited<ReturnType<typeof helloWorld>>
