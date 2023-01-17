@@ -13,12 +13,7 @@ import { useNavigateWithQuery } from '../hooks/useNavigateWithQuery';
 import { getMediaWithFilter } from '../services/mediaService';
 import MediaPoster from './MediaPoster';
 
-interface Props {
-  q?: string;
-  mood?: string;
-}
-
-const pageSize = 2;
+const pageSize = 12;
 
 interface State {
   medias: MediaDTO[];

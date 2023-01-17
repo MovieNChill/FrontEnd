@@ -1,5 +1,13 @@
 import { Carousel } from '@mantine/carousel';
-import { Button, Col, Grid, Space, Text, TextInput } from '@mantine/core';
+import {
+  Button,
+  CloseButton,
+  Col,
+  Grid,
+  Space,
+  Text,
+  TextInput,
+} from '@mantine/core';
 import { useState } from 'react';
 import { Search as S } from 'tabler-icons-react';
 import { medias } from '../constants/routes';
@@ -18,6 +26,11 @@ const Search = () => {
     searchBarValue
       ? navigate(medias.path, { q: searchBarValue })
       : clearSearchParam('q');
+  };
+
+  const handleClearSearch = () => {
+    setSearchBarValue('');
+    clearSearchParam('q');
   };
 
   const handleMoodClick = (mood: string) => {
@@ -47,18 +60,28 @@ const Search = () => {
           }
         }}
         rightSection={
-          <Button
-            styles={() => ({
-              root: {
-                height: '100%',
-                width: '10vw',
-                minWidth: '80px',
-              },
-            })}
-            radius="xl"
-            onClick={handleSearch}>
-            <S />
-          </Button>
+          <>
+            {searchBarValue && (
+              <CloseButton
+                title="Close popover"
+                size="xl"
+                iconSize={20}
+                onClick={handleClearSearch}
+              />
+            )}
+            <Button
+              styles={() => ({
+                root: {
+                  height: '100%',
+                  width: '10vw',
+                  minWidth: '80px',
+                },
+              })}
+              radius="xl"
+              onClick={() => handleSearch()}>
+              <S />
+            </Button>
+          </>
         }
         placeholder="Search for movies, TV shows, keywords..."
       />
