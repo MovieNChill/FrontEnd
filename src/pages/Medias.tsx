@@ -1,56 +1,28 @@
-import { Group, Select, Text } from '@mantine/core';
-import { forwardRef, useState } from 'react';
-import * as Icons from 'tabler-icons-react';
+import { Group } from '@mantine/core';
+//import * as Icons from 'tabler-icons-react';
 import MediasScroll from '../components/MediasScroll';
-import ThemeColoredIcon from '../components/ThemeColoredIcon';
-import { Platform, useCategories, usePlatforms } from '../hooks/mediasHooks';
 
-type SelectPlatformItemProps = Platform & React.ComponentPropsWithoutRef<'div'>;
+// type SelectPlatformItemProps = Platform & React.ComponentPropsWithoutRef<'div'>;
 
-const SelectPlatformItem = forwardRef<HTMLDivElement, SelectPlatformItemProps>(
-  ({ icon, label, ...others }: SelectPlatformItemProps, ref) => (
-    <div ref={ref} {...others}>
-      <Group noWrap>
-        <ThemeColoredIcon component={Icons[icon]} />
-        <Text>{label}</Text>
-      </Group>
-    </div>
-  ),
-);
+// const SelectPlatformItem = forwardRef<HTMLDivElement, SelectPlatformItemProps>(
+//   ({ icon, label, ...others }: SelectPlatformItemProps, ref) => (
+//     <div ref={ref} {...others}>
+//       <Group noWrap>
+//         <ThemeColoredIcon component={Icons[icon]} />
+//         <Text>{label}</Text>
+//       </Group>
+//     </div>
+//   ),
+// );
 
 const Medias = () => {
-  const categories = useCategories();
-  const platforms = usePlatforms();
+  //const platforms = usePlatforms();
 
-  const [selectedCategory, setSelectedCategory] = useState<string | null>();
-  const [selectedPlatform, setSelectedPlatform] = useState<Platform>();
+  //const [selectedPlatform, setSelectedPlatform] = useState<Platform>();
 
   return (
     <>
       <Group>
-        <Select
-          aria-label="Category"
-          placeholder="Category"
-          variant="unstyled"
-          clearable
-          clearButtonLabel="Clear category select field"
-          value={selectedCategory ?? null}
-          onChange={(value) => setSelectedCategory(value)}
-          maxDropdownHeight={300}
-          icon={
-            <ThemeColoredIcon
-              component={Icons.Category}
-              themed={!!selectedCategory}
-            />
-          }
-          searchable
-          nothingFound="No options"
-          data={categories.map((category) => ({
-            value: category.toLowerCase(),
-            label: category,
-          }))}
-        />
-
         {/* <Select
           aria-label="Platform"
           placeholder="Platform"

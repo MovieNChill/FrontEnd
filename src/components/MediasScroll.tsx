@@ -8,7 +8,6 @@ import {
 import { useEffect, useState } from 'react';
 import { useAsync, useAsyncFn } from 'react-use';
 import { MediaDTO } from '../entities/media';
-import { mediaFilterHelper } from '../helpers/mediaFilterHelper';
 import { useNavigateWithQuery } from '../hooks/useNavigateWithQuery';
 import { getMediaWithFilter } from '../services/mediaService';
 import MediaPoster from './MediaPoster';
@@ -28,11 +27,11 @@ const MediasScroll = () => {
   const [touched, setTouched] = useState<boolean>(false);
   const [observer, setObserver] = useState<IntersectionObserver>();
   const [ref, setRef] = useState<HTMLDivElement | null>(null);
-  const { searchParams } = useNavigateWithQuery();
+  const { searchQuery } = useNavigateWithQuery();
 
   useAsync(
-    () => getMedias({ page: 0, medias: [] }, searchParams.q),
-    [searchParams.q],
+    () => getMedias({ page: 0, medias: [] }, searchQuery),
+    [searchQuery],
   );
 
   const [, getMedias] = useAsyncFn(
@@ -43,7 +42,7 @@ const MediasScroll = () => {
       const res = await getMediaWithFilter({
         page: _state.page,
         size: pageSize,
-        search: query ? mediaFilterHelper(query) : undefined,
+        search: query,
       });
 
       const total = [..._state.medias, ...res];
@@ -54,13 +53,13 @@ const MediasScroll = () => {
       completeNavigationProgress();
       return total;
     },
-    [setState, searchParams.q],
+    [setState],
   );
 
   useEffect(() => {
     if (touched && state.page * pageSize === state.medias.length) {
       setTouched(false);
-      getMedias(state, searchParams.q);
+      getMedias(state, searchQuery);
     }
   }, [state, getMedias, touched]);
 

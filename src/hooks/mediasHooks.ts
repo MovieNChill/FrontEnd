@@ -1,5 +1,5 @@
 import Icons from 'tabler-icons-react';
-import { MediaDTO } from '../entities/media';
+import { Filter } from '../entities/extends/queryParams';
 
 export const useCategories = () =>
   [
@@ -66,13 +66,14 @@ export const usePlatforms = () => {
 };
 
 export const useFilters: () => {
-  value: keyof MediaDTO;
+  value: keyof Filter;
   label: string;
 }[] = () => [
   { value: 'name', label: 'Title' },
   { value: 'stars', label: 'Star' },
   { value: 'director', label: 'Director' },
   { value: 'writers', label: 'Writer' },
+  { value: 'description', label: 'Description' },
 ];
 
 export const useMoods = () => [

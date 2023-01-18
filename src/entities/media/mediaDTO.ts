@@ -9,7 +9,7 @@ export interface MediaDTO {
   id?: number;
   type?: string;
   name?: string;
-  genre?: string[];
+  genres?: string[];
   releaseDate?: string;
   director?: string;
   writers?: string[];
