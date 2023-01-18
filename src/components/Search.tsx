@@ -1,19 +1,25 @@
-import { Button, CloseButton, Space, TextInput } from '@mantine/core';
+import { Button, CloseButton, Select, Space, TextInput } from '@mantine/core';
 import { useState } from 'react';
-import { Search as S } from 'tabler-icons-react';
+import { Filter, Search as S } from 'tabler-icons-react';
 import { medias } from '../constants/routes';
+import { useFilters } from '../hooks/mediasHooks';
 import { useNavigateWithQuery } from '../hooks/useNavigateWithQuery';
+import ThemeColoredIcon from './ThemeColoredIcon';
 
 const Search = () => {
-  //const { colorScheme } = useColorSchemeLocalStorage();
-  //const moods = useMoods();
+  // const { colorScheme } = useColorSchemeLocalStorage();
+  // const moods = useMoods();
   const { navigate, clearSearchParam, searchParams } = useNavigateWithQuery();
+  const filters = useFilters();
 
   const [searchBarValue, setSearchBarValue] = useState(searchParams.q ?? '');
+  const [selectedFilter, setSelectedFilter] = useState<string | null>();
 
   const handleSearch = () => {
     searchBarValue
-      ? navigate(medias.path, { q: searchBarValue })
+      ? navigate(medias.path, {
+          q: `${selectedFilter ? selectedFilter + ':' : ''}${searchBarValue}`,
+        })
       : clearSearchParam('q');
   };
 
@@ -22,11 +28,11 @@ const Search = () => {
     clearSearchParam('q');
   };
 
-  const handleMoodClick = (mood: string) => {
-    mood === searchParams.mood
-      ? clearSearchParam('mood')
-      : navigate(medias.path, { mood });
-  };
+  // const handleMoodClick = (mood: string) => {
+  //   mood === searchParams.mood
+  //     ? clearSearchParam('mood')
+  //     : navigate(medias.path, { mood });
+  // };
 
   return (
     <div>
@@ -58,6 +64,29 @@ const Search = () => {
                 onClick={handleClearSearch}
               />
             )}
+            <Select
+              aria-label="Filter"
+              placeholder="Filter"
+              variant="unstyled"
+              iconWidth={20}
+              clearable
+              clearButtonLabel="Clear filter select field"
+              value={selectedFilter ?? null}
+              onChange={(value) => setSelectedFilter(value)}
+              maxDropdownHeight={300}
+              icon={
+                <ThemeColoredIcon
+                  component={Filter}
+                  themed={!!selectedFilter}
+                />
+              }
+              data={filters}
+              styles={() => ({
+                root: {
+                  width: 100,
+                },
+              })}
+            />
             <Button
               styles={() => ({
                 root: {

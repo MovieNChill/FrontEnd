@@ -8,7 +8,7 @@ import {
 import { useEffect, useState } from 'react';
 import { useAsync, useAsyncFn } from 'react-use';
 import { MediaDTO } from '../entities/media';
-import { mediaNameFilterHelper } from '../helpers/mediaFilterHelper';
+import { mediaFilterHelper } from '../helpers/mediaFilterHelper';
 import { useNavigateWithQuery } from '../hooks/useNavigateWithQuery';
 import { getMediaWithFilter } from '../services/mediaService';
 import MediaPoster from './MediaPoster';
@@ -43,7 +43,7 @@ const MediasScroll = () => {
       const res = await getMediaWithFilter({
         page: _state.page,
         size: pageSize,
-        search: query ? mediaNameFilterHelper(query) : undefined,
+        search: query ? mediaFilterHelper(query) : undefined,
       });
 
       const total = [..._state.medias, ...res];
