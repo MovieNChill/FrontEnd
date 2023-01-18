@@ -50,7 +50,8 @@ const Medias = () => {
             label: category,
           }))}
         />
-        <Select
+
+        {/* <Select
           aria-label="Platform"
           placeholder="Platform"
           variant="unstyled"
@@ -71,7 +72,7 @@ const Medias = () => {
           }
           itemComponent={SelectPlatformItem}
           data={platforms}
-        />
+        /> */}
       </Group>
       <MediasScroll />
       {/* {searchParams.q || searchParams.mood ? (
