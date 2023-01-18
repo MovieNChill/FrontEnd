@@ -64,7 +64,7 @@ const MediaInfos = () => {
                   <Text c="dimmed">| 350k</Text>
                 </Group> */}
 
-                {mediaById.value.genre?.map((g, i) => (
+                {mediaById.value.genres?.map((g, i) => (
                   <Badge key={i} color="gray" variant="outline">
                     {g}
                   </Badge>

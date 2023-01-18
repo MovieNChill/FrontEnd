@@ -9,43 +9,69 @@ import {
   useNavigate,
   useSearchParams,
 } from 'react-router-dom';
-
-const searchParamsKeys = ['q', 'mood'] as const;
-type KeyType = (typeof searchParamsKeys)[number];
-type PartialRecord<K extends keyof any, T> = {
-  [P in K]?: T;
-};
+import { medias } from '../constants/routes';
+import { QueryParams } from '../entities/extends/queryParams';
 
 export const useNavigateWithQuery = () => {
   const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
-  const parameters = useMemo(() => {
-    const params: PartialRecord<KeyType, string> = {};
-    searchParamsKeys.forEach((param) => {
-      const value = searchParams.get(param);
-      if (value) {
-        params[param] = value;
-      }
-    });
-    return params;
+  const parameters: QueryParams = useMemo(() => {
+    const q = searchParams.get('q') || undefined;
+    const name = searchParams.get('name') || undefined;
+    const director = searchParams.get('director') || undefined;
+    const genres = searchParams.getAll('genres') || undefined;
+    const description = searchParams.get('description') || undefined;
+    const stars = searchParams.getAll('stars') || undefined;
+    const writers = searchParams.getAll('writers') || undefined;
+    return {
+      ...(q ? { q } : {}),
+      ...(name ? { name } : {}),
+      ...(director ? { director } : {}),
+      ...(genres ? { genres } : {}),
+      ...(description ? { description } : {}),
+      ...(stars ? { stars } : {}),
+      ...(writers ? { writers } : {}),
+    };
   }, [searchParams]);
 
-  return {
-    navigate: (
-      path: string,
-      params?: PartialRecord<KeyType, string>,
-      options?: NavigateOptions,
-    ) => {
-      const newParameters = { ...parameters, ...params };
+  const searchQuery = useMemo(() => {
+    let query = '';
+    const params = { ...parameters };
+    const q = params.q;
+    if (q) {
+      query += `${q},`;
+    }
+    delete params.q;
 
-      navigate(
-        `${path}${
-          newParameters ? `?${createSearchParams(newParameters)}` : ''
-        }`,
-        options,
-      );
-    },
+    Object.keys(params).forEach((key) => {
+      const k = key as keyof QueryParams;
+      const value = params[k];
+      if (value) {
+        if (Array.isArray(value)) {
+          value.forEach((v) => {
+            query += `${key}:${v},`;
+          });
+        } else query += `${key}:${value},`;
+      }
+    });
+    if (query.length === 0) return undefined;
+    return query.substring(0, query.length - 1);
+  }, [parameters]);
+
+  const customNavigate = (
+    path: string,
+    params?: QueryParams,
+    options?: NavigateOptions,
+  ) => {
+    navigate(
+      `${path}${`?${createSearchParams(params ?? searchParams)}`}`,
+      options,
+    );
+  };
+
+  return {
+    navigate: customNavigate,
     Link: ({ to, ...props }: LinkProps) => (
       <Link
         to={`${to}${parameters ? `?${createSearchParams(parameters)}` : ''}`}
@@ -58,11 +84,13 @@ export const useNavigateWithQuery = () => {
         {...props}
       />
     ),
+    searchQuery,
     searchParams: parameters,
-    clearSearchParam: (param: KeyType) => {
+    clearSearchParam: (param: keyof QueryParams) => {
       const newParameters = { ...parameters };
       delete newParameters[param];
-      setSearchParams(newParameters);
+      console.log(newParameters);
+      customNavigate(medias.path, newParameters);
     },
   };
 };

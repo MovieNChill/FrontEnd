@@ -11,6 +11,15 @@ import type {
   PlatformDTO,
 } from '../entities/media';
 
+export const createMedias = (mediaDTO: MediaDTO[]) => {
+  return mediasApi<boolean>({
+    url: `/list`,
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    data: mediaDTO,
+  });
+};
+
 export const getMediaWithFilter = (params?: GetMediaWithFilterParams) => {
   return mediasApi<MediaDTO[]>({ url: `/`, method: 'get', params });
 };
@@ -40,6 +49,13 @@ export const helloWorld = () => {
   return mediasApi<string>({ url: `/helloWorld`, method: 'get' });
 };
 
+export const getGenres = () => {
+  return mediasApi<string[]>({ url: `/genres`, method: 'get' });
+};
+
+export type CreateMediasResult = NonNullable<
+  Awaited<ReturnType<typeof createMedias>>
+>;
 export type GetMediaWithFilterResult = NonNullable<
   Awaited<ReturnType<typeof getMediaWithFilter>>
 >;
@@ -57,4 +73,7 @@ export type GetMediaPlatformResult = NonNullable<
 >;
 export type HelloWorldResult = NonNullable<
   Awaited<ReturnType<typeof helloWorld>>
+>;
+export type GetGenresResult = NonNullable<
+  Awaited<ReturnType<typeof getGenres>>
 >;
