@@ -1,12 +1,10 @@
 import {
-  ActionIcon,
   Badge,
   Col,
   Divider,
   Grid,
   Group,
   Loader,
-  Rating,
   Stack,
   Text,
   useMantineTheme,
@@ -14,24 +12,11 @@ import {
 import { useMediaQuery } from '@mantine/hooks';
 import { useParams } from 'react-router-dom';
 import { useAsync } from 'react-use';
-import { Bookmark } from 'tabler-icons-react';
 import MediaPoster from '../components/MediaPoster';
-import ThemeColoredIcon from '../components/ThemeColoredIcon';
+import Platform from '../components/Platform';
 import { medias } from '../constants/routes';
-import { MediaDTO } from '../entities/media';
 import { useNavigateWithQuery } from '../hooks/useNavigateWithQuery';
-import { getMediaById } from '../services/mediaService';
-import media1 from './../assets/media1.svg';
-import media2 from './../assets/media2.svg';
-import media3 from './../assets/media3.svg';
-import media4 from './../assets/media4.svg';
-
-const mediasKek: MediaDTO[] = [
-  { id: 0, imgUrl: media1, name: 'bengz' },
-  { id: 1, imgUrl: media2, name: 'bengz' },
-  { id: 2, imgUrl: media3, name: 'bengz' },
-  { id: 3, imgUrl: media4, name: 'bengz' },
-];
+import { getMediaById, getMediaPlatform } from '../services/mediaService';
 
 const MediaInfos = () => {
   const { id } = useParams();
@@ -41,7 +26,11 @@ const MediaInfos = () => {
   const theme = useMantineTheme();
   const sm = useMediaQuery(`(max-width: ${theme.breakpoints.sm}px)`);
 
-  const mediaById = useAsync(() => getMediaById(id), [id]);
+  const mediaById = useAsync(async () => {
+    const media = await getMediaById(id);
+    const platforms = await getMediaPlatform(id);
+    return { ...media, platforms };
+  }, [id]);
 
   if (mediaById.loading || !mediaById.value) {
     return <Loader />;
@@ -66,14 +55,14 @@ const MediaInfos = () => {
                       : ''
                   }`}
                 </Text>
-                <Group spacing="xs">
+                {/* <Group spacing="xs">
                   <Rating defaultValue={1} size="sm" readOnly count={1} />
                   <Text weight="bold">8.1k</Text>
                   <Text c="dimmed">| 350k</Text>
-                </Group>
+                </Group> */}
 
-                {mediaById.value.genre?.map((g) => (
-                  <Badge color="gray" variant="outline">
+                {mediaById.value.genre?.map((g, i) => (
+                  <Badge key={i} color="gray" variant="outline">
                     {g}
                   </Badge>
                 ))}
@@ -106,12 +95,19 @@ const MediaInfos = () => {
                 </Col>
                 <Col span={4}>
                   <Stack spacing="sm">
-                    <Group position="apart">
+                    <Text weight="bold">Platforms :</Text>
+                    <Group spacing="xs">
+                      {mediaById.value.platforms?.map((p, i) => {
+                        return <Platform key={i} platform={p} />;
+                      })}
+                    </Group>
+
+                    {/* <Group position="apart">
                       <Rating defaultValue={0} size="sm" count={5} />
                       <ActionIcon>
                         <ThemeColoredIcon component={Bookmark} />
                       </ActionIcon>
-                    </Group>
+                    </Group> */}
                   </Stack>
                 </Col>
               </Grid>
