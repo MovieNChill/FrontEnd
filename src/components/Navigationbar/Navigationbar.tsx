@@ -93,7 +93,7 @@ const Navigationbar = ({ menuOpened, setMenuOpened }: Props) => {
           </MNavbar.Section>
         )}
       </MNavbar.Section>
-      <MNavbar.Section mt="md" mb="xl">
+      <MNavbar.Section mt="md">
         {user ? (
           <Button
             variant="subtle"
@@ -143,6 +143,9 @@ const Navigationbar = ({ menuOpened, setMenuOpened }: Props) => {
             </Button>
           </>
         )}
+        <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
+          <div style={{ height: '30px' }}></div>
+        </MediaQuery>
       </MNavbar.Section>
     </MNavbar>
   );
