@@ -1,9 +1,10 @@
 import { Group, Select, Text } from '@mantine/core';
-import { forwardRef, useState } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 import * as Icons from 'tabler-icons-react';
 import MediasScroll from '../components/MediasScroll';
 import ThemeColoredIcon from '../components/ThemeColoredIcon';
 import { Platform, useCategories, usePlatforms } from '../hooks/mediasHooks';
+import { useNavigateWithQuery } from '../hooks/useNavigateWithQuery';
 
 type SelectPlatformItemProps = Platform & React.ComponentPropsWithoutRef<'div'>;
 
@@ -24,6 +25,15 @@ const Medias = () => {
 
   const [selectedCategory, setSelectedCategory] = useState<string | null>();
   const [selectedPlatform, setSelectedPlatform] = useState<Platform>();
+
+  // do a useEffect to update query params when selectedCategory or selectedPlatform changes
+  useEffect(() => {
+    const { searchParams } = useNavigateWithQuery();
+    // searchParams.set('category', selectedCategory ?? '');
+    // searchParams.set('platform', selectedPlatform?.value ?? '');
+  }, [selectedCategory, selectedPlatform]);
+
+  const { searchParams } = useNavigateWithQuery();
 
   return (
     <>
