@@ -93,7 +93,7 @@ const Navigationbar = ({ menuOpened, setMenuOpened }: Props) => {
           </MNavbar.Section>
         )}
       </MNavbar.Section>
-      <MNavbar.Section mt="md">
+      <MNavbar.Section mt="md" mb="xl">
         {user ? (
           <Button
             variant="subtle"
