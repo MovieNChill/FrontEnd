@@ -1,23 +1,12 @@
-import { Carousel } from '@mantine/carousel';
-import {
-  Button,
-  CloseButton,
-  Col,
-  Grid,
-  Space,
-  Text,
-  TextInput,
-} from '@mantine/core';
+import { Button, CloseButton, Space, TextInput } from '@mantine/core';
 import { useState } from 'react';
 import { Search as S } from 'tabler-icons-react';
 import { medias } from '../constants/routes';
-import { useMoods } from '../hooks/mediasHooks';
-import { useColorSchemeLocalStorage } from '../hooks/useColorSchemeLocalStorage';
 import { useNavigateWithQuery } from '../hooks/useNavigateWithQuery';
 
 const Search = () => {
-  const { colorScheme } = useColorSchemeLocalStorage();
-  const moods = useMoods();
+  //const { colorScheme } = useColorSchemeLocalStorage();
+  //const moods = useMoods();
   const { navigate, clearSearchParam, searchParams } = useNavigateWithQuery();
 
   const [searchBarValue, setSearchBarValue] = useState(searchParams.q ?? '');
@@ -86,7 +75,7 @@ const Search = () => {
         placeholder="Search for movies, TV shows, keywords..."
       />
       <Space h="lg" />
-      <Grid>
+      {/* <Grid>
         <Col span={2}>
           <Text align="center">What's Your Mood ?</Text>
         </Col>
@@ -157,7 +146,7 @@ const Search = () => {
             ))}
           </Carousel>
         </Col>
-      </Grid>
+      </Grid> */}
     </div>
   );
 };
