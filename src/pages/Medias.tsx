@@ -4,7 +4,6 @@ import * as Icons from 'tabler-icons-react';
 import MediasScroll from '../components/MediasScroll';
 import ThemeColoredIcon from '../components/ThemeColoredIcon';
 import { Platform, useCategories, usePlatforms } from '../hooks/mediasHooks';
-import { useNavigateWithQuery } from '../hooks/useNavigateWithQuery';
 
 type SelectPlatformItemProps = Platform & React.ComponentPropsWithoutRef<'div'>;
 
@@ -25,8 +24,6 @@ const Medias = () => {
 
   const [selectedCategory, setSelectedCategory] = useState<string | null>();
   const [selectedPlatform, setSelectedPlatform] = useState<Platform>();
-
-  const { searchParams } = useNavigateWithQuery();
 
   return (
     <>
@@ -76,7 +73,7 @@ const Medias = () => {
           data={platforms}
         />
       </Group>
-      <MediasScroll q={searchParams.q} mood={searchParams.mood} />
+      <MediasScroll />
       {/* {searchParams.q || searchParams.mood ? (
         <MediasScroll q={searchParams.q} mood={searchParams.mood} />
       ) : (
