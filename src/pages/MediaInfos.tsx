@@ -39,7 +39,10 @@ const MediaInfos = () => {
   return (
     <>
       <Grid gutter={50}>
-        <Col xl="content" span={12} style={{ textAlign: 'center' }}>
+        <Col
+          xl="content"
+          span={12}
+          style={{ display: 'flex', justifyContent: 'center' }}>
           <MediaPoster media={mediaById.value} isLink={false} />
         </Col>
         <Col xl="auto">
@@ -70,8 +73,8 @@ const MediaInfos = () => {
               <Text>{mediaById.value.description}</Text>
             </Col>
             <Col span={12}>
-              <Grid>
-                <Col span={8}>
+              <Grid gutter="xl">
+                <Col xl={8} span={12}>
                   <Stack spacing="sm">
                     <Group spacing="xs">
                       <Text weight="bold">Director :</Text>
@@ -93,7 +96,7 @@ const MediaInfos = () => {
                     </Group>
                   </Stack>
                 </Col>
-                <Col span={4}>
+                <Col xl={4} span={12}>
                   <Stack spacing="sm">
                     <Text weight="bold">Platforms :</Text>
                     <Group spacing="xs">
