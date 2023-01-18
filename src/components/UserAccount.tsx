@@ -1,4 +1,4 @@
-import { Avatar, Box, Group, Text, useMantineTheme } from '@mantine/core';
+import { Avatar, Box, Col, Grid, Text, useMantineTheme } from '@mantine/core';
 import { UserCircle } from 'tabler-icons-react';
 import { User } from '../entities/user';
 import ThemeColoredIcon from './ThemeColoredIcon';
@@ -40,32 +40,34 @@ const UserAccount = ({ user }: Props) => {
                 : theme.colors.gray[0],
           },
         }}> */}
-      <Group noWrap>
-        {user.picture ? (
-          <Avatar src={user.picture} radius="xl" alt="user picture" />
-        ) : (
-          <ThemeColoredIcon
-            component={UserCircle}
-            size={40}
-            strokeWidth={1.5}
-            color={'black'}
-          />
-        )}
-        <Box>
+      <Grid gutter={40}>
+        <Col span={2}>
+          {user.picture ? (
+            <Avatar src={user.picture} radius="xl" alt="user picture" />
+          ) : (
+            <ThemeColoredIcon
+              component={UserCircle}
+              size={40}
+              strokeWidth={1.5}
+              color={'black'}
+            />
+          )}
+        </Col>
+        <Col span={10}>
           <Text size="sm" weight={500} truncate>
             {user.pseudo}
           </Text>
           <Text color="dimmed" size="xs" truncate>
             {user.email}
           </Text>
-        </Box>
+        </Col>
 
         {/* {theme.dir === 'ltr' ? (
             <IconChevronRight size={18} />
           ) : (
             <IconChevronLeft size={18} />
           )} */}
-      </Group>
+      </Grid>
       {/* </UnstyledButton> */}
     </Box>
   );
