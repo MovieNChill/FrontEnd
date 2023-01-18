@@ -4,78 +4,76 @@
  * OpenAPI definition
  * OpenAPI spec version: v0
  */
+import { usersApi } from '../api/api';
 import type {
-  User,
   CustomResponseUser,
-  LoginDTO
-} from '../entities/user'
-import { usersApi } from '../api/api'
+  GoogleAuthBody,
+  LoginDTO,
+  User,
+} from '../entities/user';
 
+export const getAllUsers = () => {
+  return usersApi<User[]>({ url: `/`, method: 'get' });
+};
 
+export const updateUser = (user: User) => {
+  return usersApi<User>({
+    url: `/`,
+    method: 'put',
+    headers: { 'Content-Type': 'application/json' },
+    data: user,
+  });
+};
 
-  export const getAllUsers = (
-    
- ) => {
-      return usersApi<User[]>(
-      {url: `/`, method: 'get'
-    },
-      );
-    }
-  
-export const updateUser = (
-    user: User,
- ) => {
-      return usersApi<User>(
-      {url: `/`, method: 'put',
-      headers: {'Content-Type': 'application/json', },
-      data: user
-    },
-      );
-    }
-  
-export const register = (
-    user: User,
- ) => {
-      return usersApi<CustomResponseUser>(
-      {url: `/register`, method: 'post',
-      headers: {'Content-Type': 'application/json', },
-      data: user
-    },
-      );
-    }
-  
-export const login = (
-    loginDTO: LoginDTO,
- ) => {
-      return usersApi<CustomResponseUser>(
-      {url: `/login`, method: 'post',
-      headers: {'Content-Type': 'application/json', },
-      data: loginDTO
-    },
-      );
-    }
-  
-export const getUserByid = (
-    id: number,
- ) => {
-      return usersApi<User>(
-      {url: `/${id}`, method: 'get'
-    },
-      );
-    }
-  
-export const deleteUser = (
-    id: number,
- ) => {
-      return usersApi<boolean>(
-      {url: `/${id}`, method: 'delete'
-    },
-      );
-    }
-  
-export type GetAllUsersResult = NonNullable<Awaited<ReturnType<typeof getAllUsers>>>
-export type UpdateUserResult = NonNullable<Awaited<ReturnType<typeof updateUser>>>
-export type RegisterResult = NonNullable<Awaited<ReturnType<typeof register>>>
-export type LoginResult = NonNullable<Awaited<ReturnType<typeof login>>>
-export type GetUserByidResult = NonNullable<Awaited<ReturnType<typeof getUserByid>>>
-export type DeleteUserResult = NonNullable<Awaited<ReturnType<typeof deleteUser>>>
+export const register = (user: User) => {
+  return usersApi<CustomResponseUser>({
+    url: `/register`,
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    data: user,
+  });
+};
+
+export const login = (loginDTO: LoginDTO) => {
+  return usersApi<CustomResponseUser>({
+    url: `/login`,
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    data: loginDTO,
+  });
+};
+
+export const googleAuth = (googleAuthBody: GoogleAuthBody) => {
+  return usersApi<CustomResponseUser>({
+    url: `/google`,
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    data: googleAuthBody,
+  });
+};
+
+export const getUserByid = (id: number) => {
+  return usersApi<User>({ url: `/${id}`, method: 'get' });
+};
+
+export const deleteUser = (id: number) => {
+  return usersApi<boolean>({ url: `/${id}`, method: 'delete' });
+};
+
+export type GetAllUsersResult = NonNullable<
+  Awaited<ReturnType<typeof getAllUsers>>
+>;
+export type UpdateUserResult = NonNullable<
+  Awaited<ReturnType<typeof updateUser>>
+>;
+export type RegisterResult = NonNullable<Awaited<ReturnType<typeof register>>>;
+export type LoginResult = NonNullable<Awaited<ReturnType<typeof login>>>;
+export type GoogleAuthResult = NonNullable<
+  Awaited<ReturnType<typeof googleAuth>>
+>;
+export type GetUserByidResult = NonNullable<
+  Awaited<ReturnType<typeof getUserByid>>
+>;
+export type DeleteUserResult = NonNullable<
+  Awaited<ReturnType<typeof deleteUser>>
+>;

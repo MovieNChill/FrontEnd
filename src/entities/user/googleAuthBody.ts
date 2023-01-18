@@ -5,10 +5,4 @@
  * OpenAPI spec version: v0
  */
 
-export interface User {
-  id?: number;
-  pseudo: string;
-  email: string;
-  password?: string;
-  picture?: string;
-}
+export type GoogleAuthBody = { [key: string]: string };

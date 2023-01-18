@@ -2,35 +2,52 @@ import { Button, Text } from '@mantine/core';
 import { TokenResponse, useGoogleLogin } from '@react-oauth/google';
 import { useState } from 'react';
 import { BrandGoogle } from 'tabler-icons-react';
+import { home } from '../constants/routes';
+import { useNavigateWithQuery } from '../hooks/useNavigateWithQuery';
+import { useUserLocalStorage } from '../hooks/useUserLocalStorage';
+import { googleAuth } from '../services/userService';
 
 const GoogleButton = () => {
   const isRegister = location.pathname === '/register';
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>();
+  const { setUser } = useUserLocalStorage();
+  const { navigate } = useNavigateWithQuery();
 
-  const handleSuccess = (
+  const sendGoogleToken = async (token: string) => {
+    const res = await googleAuth({ token });
+    if (res.code || !res.object) {
+      setError(res.message);
+      return;
+    }
+    setUser(res.object);
+    setLoading(false);
+    navigate(home.path);
+  };
+
+  const handleSuccess = async (
     tokenResponse: Omit<
       TokenResponse,
       'error' | 'error_description' | 'error_uri'
     >,
   ) => {
-    setLoading(false);
-    console.log(tokenResponse.access_token);
     if (
       tokenResponse.scope.includes('email') &&
       tokenResponse.scope.includes('profile')
     ) {
+      setError(undefined);
+      await sendGoogleToken(tokenResponse.access_token);
     } else {
       setError('You must allow access to your email and profile');
+      setLoading(false);
     }
-    console.log(tokenResponse);
   };
 
   const handleError = (
     error: Pick<TokenResponse, 'error' | 'error_description' | 'error_uri'>,
   ) => {
+    setError(error.error_description);
     setLoading(false);
-    console.log(error);
   };
 
   const login = useGoogleLogin({
@@ -42,6 +59,7 @@ const GoogleButton = () => {
     setLoading(true);
     login();
   };
+
   return (
     <>
       <Button
