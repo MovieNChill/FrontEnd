@@ -13,14 +13,9 @@ const Platform = ({ platform }: Props) => {
     <Popover position="top" withArrow shadow="md" opened={opened}>
       <Popover.Target>
         <Badge
-          styles={() => ({
-            root: {
-              '&:hover': {
-                cursor: 'pointer',
-              },
-            },
-          })}
+          style={{ cursor: 'pointer' }}
           color="primary"
+          variant={opened ? 'filled' : 'outline'}
           onClick={toggle}>
           {platform.name}
         </Badge>
