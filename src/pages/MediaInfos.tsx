@@ -18,6 +18,11 @@ import { medias } from '../constants/routes';
 import { useNavigateWithQuery } from '../hooks/useNavigateWithQuery';
 import { getMediaById, getMediaPlatform } from '../services/mediaService';
 
+const parse = (str: string) => {
+  const name = str.split('name=')[1];
+  return name.substring(0, name.length - 1);
+};
+
 const MediaInfos = () => {
   const { id } = useParams();
   const { Navigate } = useNavigateWithQuery();
@@ -66,7 +71,7 @@ const MediaInfos = () => {
 
                 {mediaById.value.genres?.map((g, i) => (
                   <Badge key={i} color="gray" variant="outline">
-                    {g}
+                    {parse(g)}
                   </Badge>
                 ))}
               </Group>
@@ -92,7 +97,9 @@ const MediaInfos = () => {
 
                     <Group spacing="xs">
                       <Text weight="bold">Stars :</Text>
-                      <Text>{mediaById.value.stars?.join(', ')}</Text>
+                      <Text>
+                        {mediaById.value.stars?.map((s) => parse(s)).join(', ')}
+                      </Text>
                     </Group>
                   </Stack>
                 </Col>
