@@ -5,12 +5,13 @@ import {
   Col,
   Grid,
   Loader,
+  MediaQuery,
   Select,
   Space,
   Text,
   TextInput,
 } from '@mantine/core';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useAsync } from 'react-use';
 import { Filter as F, Search as S } from 'tabler-icons-react';
 import { medias } from '../constants/routes';
@@ -42,8 +43,12 @@ const Search = () => {
   >(
     (searchParams.name ? 'name' : undefined) ||
       (searchParams.director ? 'director' : undefined) ||
-      (searchParams.writers ? 'writers' : undefined) ||
-      (searchParams.stars ? 'stars' : undefined) ||
+      (searchParams.writers && searchParams.writers.length > 0
+        ? 'writers'
+        : undefined) ||
+      (searchParams.stars && searchParams.stars.length > 0
+        ? 'stars'
+        : undefined) ||
       (searchParams.description ? 'description' : undefined) ||
       undefined,
   );
@@ -52,11 +57,7 @@ const Search = () => {
     searchParams.genres || [],
   );
 
-  useEffect(() => {
-    handleSearchAndCategory();
-  }, [selectedCategories]);
-
-  const handleSearchAndCategory = () => {
+  const handleSearch = () => {
     const filter = searchBarValue
       ? selectedFilter
         ? { [selectedFilter]: searchBarValue }
@@ -80,11 +81,17 @@ const Search = () => {
   // };
 
   const handleCheckCategory = (category: string) => {
-    setSelectedCategories((prev) =>
-      prev.includes(category)
-        ? prev.filter((c) => c !== category)
-        : [...prev, category],
-    );
+    const filter = searchBarValue
+      ? selectedFilter
+        ? { [selectedFilter]: searchBarValue }
+        : { q: searchBarValue }
+      : undefined;
+    const genres = selectedCategories.includes(category)
+      ? selectedCategories.filter((c) => c !== category)
+      : [...selectedCategories, category];
+
+    setSelectedCategories(genres);
+    navigate(medias.path, { ...filter, ...{ genres } });
   };
 
   const categories = useAsync(() => getGenres(), []);
@@ -110,7 +117,7 @@ const Search = () => {
         onChange={(e) => setSearchBarValue(e.currentTarget.value)}
         onKeyDown={(e) => {
           if (e.key === 'Enter') {
-            handleSearchAndCategory();
+            handleSearch();
           }
         }}
         rightSection={
@@ -123,26 +130,28 @@ const Search = () => {
                 onClick={handleClearSearch}
               />
             )}
-            <Select
-              aria-label="Filter"
-              placeholder="Filter"
-              variant="unstyled"
-              iconWidth={20}
-              clearable
-              clearButtonLabel="Clear filter select field"
-              value={selectedFilter ?? null}
-              onChange={(value) => setSelectedFilter(value as keyof Filter)}
-              maxDropdownHeight={300}
-              icon={
-                <ThemeColoredIcon component={F} themed={!!selectedFilter} />
-              }
-              data={filters}
-              styles={() => ({
-                root: {
-                  width: 120,
-                },
-              })}
-            />
+            <MediaQuery smallerThan="xs" styles={{ display: 'none' }}>
+              <Select
+                aria-label="Filter"
+                placeholder="Filter"
+                variant="unstyled"
+                iconWidth={20}
+                clearable
+                clearButtonLabel="Clear filter select field"
+                value={selectedFilter ?? null}
+                onChange={(value) => setSelectedFilter(value as keyof Filter)}
+                maxDropdownHeight={300}
+                icon={
+                  <ThemeColoredIcon component={F} themed={!!selectedFilter} />
+                }
+                data={filters}
+                styles={() => ({
+                  root: {
+                    width: 120,
+                  },
+                })}
+              />
+            </MediaQuery>
             <Button
               styles={() => ({
                 root: {
@@ -152,90 +161,109 @@ const Search = () => {
                 },
               })}
               radius="xl"
-              onClick={() => handleSearchAndCategory()}>
+              onClick={() => handleSearch()}>
               <S />
             </Button>
           </>
         }
         placeholder="Search movies, TV shows..."
       />
+
+      <MediaQuery largerThan="xs" styles={{ display: 'none' }}>
+        <Select
+          aria-label="Filter"
+          placeholder="Filter"
+          variant="unstyled"
+          iconWidth={20}
+          clearable
+          clearButtonLabel="Clear filter select field"
+          value={selectedFilter ?? null}
+          onChange={(value) => setSelectedFilter(value as keyof Filter)}
+          maxDropdownHeight={300}
+          icon={<ThemeColoredIcon component={F} themed={!!selectedFilter} />}
+          data={filters}
+          styles={() => ({
+            root: {
+              width: 120,
+            },
+          })}
+        />
+      </MediaQuery>
       <Space h="lg" />
-      {categories.value && (
-        <Grid>
-          <Col span={2}>
-            <Text align="center">Category</Text>
-          </Col>
-          <Col span={10}>
-            <Carousel
-              slideSize={`${(1 / categories.value.length) * 100}%`}
-              slideGap="md"
-              controlsOffset={0}
-              dragFree
-              align="start"
-              initialSlide={
-                selectedCategories[0]
-                  ? categories.value.indexOf(selectedCategories[0])
-                  : 0
-              }
-              draggable
-              loop
-              styles={(theme) => ({
-                viewport: {
-                  width: '95%',
-                  margin: '0 auto',
-                  cursor: 'grab',
+      <Grid>
+        <Col span={2}>
+          <Text align="center">Category</Text>
+        </Col>
+        <Col span={10}>
+          <Carousel
+            slideSize={`${(1 / categories.value.length) * 100}%`}
+            slideGap="md"
+            controlsOffset={0}
+            dragFree
+            align="start"
+            initialSlide={
+              selectedCategories[0]
+                ? categories.value.indexOf(selectedCategories[0])
+                : 0
+            }
+            draggable
+            loop
+            styles={(theme) => ({
+              viewport: {
+                width: '95%',
+                margin: '0 auto',
+                cursor: 'grab',
+              },
+              control: {
+                boxShadow: 'none',
+                backgroundColor: 'transparent',
+                border: 'none',
+                color: colorScheme === 'light' ? theme.black : theme.white,
+                opacity: 1,
+                '& svg': {
+                  width: '30px',
+                  height: '30px',
                 },
-                control: {
-                  boxShadow: 'none',
-                  backgroundColor: 'transparent',
-                  border: 'none',
-                  color: colorScheme === 'light' ? theme.black : theme.white,
-                  opacity: 1,
-                  '& svg': {
-                    width: '30px',
-                    height: '30px',
-                  },
-                },
-                slide: {
-                  display: 'flex',
-                  alignItems: 'center',
-                },
-              })}>
-              {categories.value.map((category, index) => (
-                <Carousel.Slide key={index}>
-                  <Button
-                    variant="filled"
-                    fullWidth
-                    radius="xl"
-                    onClick={() => handleCheckCategory(category)}
-                    styles={(theme) => ({
-                      root: {
-                        color:
-                          colorScheme === 'dark'
-                            ? theme.white
-                            : colorScheme === 'light' &&
-                              !selectedCategories.includes(category)
-                            ? theme.black
-                            : theme.white,
-                        backgroundColor: selectedCategories.includes(category)
-                          ? theme.colors.primary
-                          : colorScheme === 'light'
-                          ? theme.colors.gray[0]
-                          : theme.colors.dark,
-                        '&:hover': {
-                          backgroundColor: theme.colors.primary,
-                          color: theme.white,
-                        },
+              },
+              slide: {
+                display: 'flex',
+                alignItems: 'center',
+              },
+            })}>
+            {categories.value.map((category, index) => (
+              <Carousel.Slide key={index}>
+                <Button
+                  variant="filled"
+                  fullWidth
+                  radius="xl"
+                  onClick={() => handleCheckCategory(category)}
+                  styles={(theme) => ({
+                    root: {
+                      color:
+                        colorScheme === 'dark'
+                          ? theme.white
+                          : colorScheme === 'light' &&
+                            !selectedCategories.includes(category)
+                          ? theme.black
+                          : theme.white,
+                      backgroundColor: selectedCategories.includes(category)
+                        ? theme.colors.primary
+                        : colorScheme === 'light'
+                        ? theme.colors.gray[0]
+                        : theme.colors.dark,
+                      '&:hover': {
+                        backgroundColor: theme.colors.primary,
+                        color: theme.white,
                       },
-                    })}>
-                    {category}
-                  </Button>
-                </Carousel.Slide>
-              ))}
-            </Carousel>
-          </Col>
-        </Grid>
-      )}
+                    },
+                  })}>
+                  {category}
+                </Button>
+              </Carousel.Slide>
+            ))}
+          </Carousel>
+        </Col>
+      </Grid>
 
       {/* <Grid>
         <Col span={2}>
