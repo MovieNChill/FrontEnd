@@ -211,8 +211,10 @@ const Search = () => {
                     styles={(theme) => ({
                       root: {
                         color:
-                          colorScheme === 'light' &&
-                          selectedCategories.includes(category)
+                          colorScheme === 'dark'
+                            ? theme.white
+                            : colorScheme === 'light' &&
+                              !selectedCategories.includes(category)
                             ? theme.black
                             : theme.white,
                         backgroundColor: selectedCategories.includes(category)
