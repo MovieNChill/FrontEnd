@@ -16,13 +16,13 @@ export default defineConfig({
         theme_color: '#191919',
         icons: [
           {
-            src: 'logo.svg',
+            src: 'logo_pwa.svg',
             sizes: 'any',
             type: 'image/svg+xml',
           },
         ],
       },
-      includeAssets: ['logo.svg'],
+      includeAssets: ['logo_pwa.svg'],
       registerType: 'autoUpdate',
     }),
   ],
