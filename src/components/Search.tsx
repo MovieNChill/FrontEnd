@@ -4,6 +4,7 @@ import {
   CloseButton,
   Col,
   Grid,
+  Loader,
   Select,
   Space,
   Text,
@@ -18,7 +19,6 @@ import { useFilters } from '../hooks/mediasHooks';
 import { useColorSchemeLocalStorage } from '../hooks/useColorSchemeLocalStorage';
 import { useNavigateWithQuery } from '../hooks/useNavigateWithQuery';
 import { getGenres } from '../services/mediaService';
-import Loader from './Loader';
 import ThemeColoredIcon from './ThemeColoredIcon';
 
 const Search = () => {
@@ -92,6 +92,7 @@ const Search = () => {
   if (categories.loading || !categories.value) {
     return <Loader />;
   }
+
   return (
     <div>
       <TextInput
@@ -159,78 +160,81 @@ const Search = () => {
         placeholder="Search movies, TV shows..."
       />
       <Space h="lg" />
-      <Grid>
-        <Col span={2}>
-          <Text align="center">Category</Text>
-        </Col>
-        <Col span={10}>
-          <Carousel
-            slideSize={`${(1 / 7) * 100}%`}
-            slideGap="md"
-            controlsOffset={0}
-            dragFree
-            align="start"
-            initialSlide={
-              selectedCategories[0]
-                ? categories.value.indexOf(selectedCategories[0])
-                : 0
-            }
-            draggable
-            loop
-            styles={(theme) => ({
-              viewport: {
-                width: '95%',
-                margin: '0 auto',
-                cursor: 'grab',
-              },
-              control: {
-                boxShadow: 'none',
-                backgroundColor: 'transparent',
-                border: 'none',
-                color: colorScheme === 'light' ? theme.black : theme.white,
-                opacity: 1,
-                '& svg': {
-                  width: '30px',
-                  height: '30px',
+      {categories.value && (
+        <Grid>
+          <Col span={2}>
+            <Text align="center">Category</Text>
+          </Col>
+          <Col span={10}>
+            <Carousel
+              slideSize={`${(1 / categories.value.length) * 100}%`}
+              slideGap="md"
+              controlsOffset={0}
+              dragFree
+              align="start"
+              initialSlide={
+                selectedCategories[0]
+                  ? categories.value.indexOf(selectedCategories[0])
+                  : 0
+              }
+              draggable
+              loop
+              styles={(theme) => ({
+                viewport: {
+                  width: '95%',
+                  margin: '0 auto',
+                  cursor: 'grab',
                 },
-              },
-              slide: {
-                display: 'flex',
-                alignItems: 'center',
-              },
-            })}>
-            {categories.value.map((category, index) => (
-              <Carousel.Slide key={index}>
-                <Button
-                  variant="filled"
-                  fullWidth
-                  radius="xl"
-                  onClick={() => handleCheckCategory(category)}
-                  styles={(theme) => ({
-                    root: {
-                      color:
-                        colorScheme === 'light' &&
-                        selectedCategories.includes(category)
-                          ? theme.black
-                          : theme.white,
-                      backgroundColor: selectedCategories.includes(category)
-                        ? theme.colors.primary
-                        : colorScheme === 'light'
-                        ? theme.colors.gray[0]
-                        : theme.colors.dark,
-                      '&:hover': {
-                        backgroundColor: theme.colors.primary,
-                        color: theme.white,
+                control: {
+                  boxShadow: 'none',
+                  backgroundColor: 'transparent',
+                  border: 'none',
+                  color: colorScheme === 'light' ? theme.black : theme.white,
+                  opacity: 1,
+                  '& svg': {
+                    width: '30px',
+                    height: '30px',
+                  },
+                },
+                slide: {
+                  display: 'flex',
+                  alignItems: 'center',
+                },
+              })}>
+              {categories.value.map((category, index) => (
+                <Carousel.Slide key={index}>
+                  <Button
+                    variant="filled"
+                    fullWidth
+                    radius="xl"
+                    onClick={() => handleCheckCategory(category)}
+                    styles={(theme) => ({
+                      root: {
+                        color:
+                          colorScheme === 'light' &&
+                          selectedCategories.includes(category)
+                            ? theme.black
+                            : theme.white,
+                        backgroundColor: selectedCategories.includes(category)
+                          ? theme.colors.primary
+                          : colorScheme === 'light'
+                          ? theme.colors.gray[0]
+                          : theme.colors.dark,
+                        '&:hover': {
+                          backgroundColor: theme.colors.primary,
+                          color: theme.white,
+                        },
                       },
-                    },
-                  })}>
-                  {category}
-                </Button>
-              </Carousel.Slide>
-            ))}
-          </Carousel>
-        </Col>
-      </Grid>
+                    })}>
+                    {category}
+                  </Button>
+                </Carousel.Slide>
+              ))}
+            </Carousel>
+          </Col>
+        </Grid>
+      )}
+
       {/* <Grid>
         <Col span={2}>
           <Text align="center">What's Your Mood ?</Text>

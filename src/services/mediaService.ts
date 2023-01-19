@@ -9,7 +9,17 @@ import type {
   GetMediaWithFilterParams,
   MediaDTO,
   PlatformDTO,
+  RecommendationDTO,
 } from '../entities/media';
+
+export const getRecommendation = (recommendationDTO: RecommendationDTO) => {
+  return mediasApi<string>({
+    url: `/recommend`,
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    data: recommendationDTO,
+  });
+};
 
 export const createMedias = (mediaDTO: MediaDTO[]) => {
   return mediasApi<boolean>({
@@ -53,6 +63,9 @@ export const getGenres = () => {
   return mediasApi<string[]>({ url: `/genres`, method: 'get' });
 };
 
+export type GetRecommendationResult = NonNullable<
+  Awaited<ReturnType<typeof getRecommendation>>
+>;
 export type CreateMediasResult = NonNullable<
   Awaited<ReturnType<typeof createMedias>>
 >;

@@ -1,22 +1,26 @@
-import MediasRow from '../components/MediasRow';
-import { MediaDTO } from '../entities/media';
+import { Loader, Text } from '@mantine/core';
+import { useAsync } from 'react-use';
+import Recommendation from '../components/Recommendation';
 import { useUserLocalStorage } from '../hooks/useUserLocalStorage';
-import media1 from './../assets/media1.svg';
-import media2 from './../assets/media2.svg';
-import media3 from './../assets/media3.svg';
-import media4 from './../assets/media4.svg';
-
-const medias: MediaDTO[] = [
-  { id: 0, imgUrl: media1, name: 'bengz' },
-  { id: 1, imgUrl: media2, name: 'bengz' },
-  { id: 2, imgUrl: media3, name: 'bengz' },
-  { id: 3, imgUrl: media4, name: 'bengz' },
-];
+import { getGenres } from '../services/mediaService';
 
 const Home = () => {
   const { user } = useUserLocalStorage();
-  if (!user) return <></>;
-  return <MediasRow medias={medias} title="Recommended for you" />;
+
+  const categories = useAsync(() => getGenres(), []);
+
+  if (categories.loading || !categories.value) {
+    return <Loader />;
+  }
+  if (!user || !categories.value) return <></>;
+  return (
+    <>
+      <Text weight={500}>Recommended for you:</Text>
+      {categories.value.map((category, i) => (
+        <Recommendation key={i} category={category} userId={user.id ?? 0} />
+      ))}
+    </>
+  );
 };
 
 export default Home;
